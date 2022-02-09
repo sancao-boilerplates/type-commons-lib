@@ -1,0 +1,65 @@
+{
+    "name": "ts-commons-lib",
+    "version": "2.4.1",
+    "description": "",
+    "main": "./lib/index.js",
+    "typings": "./lib/index.d.ts",
+    "scripts": {
+        "build": "./node_modules/typescript/bin/tsc",
+        "lint": "eslint --color 'src/**/*' || echo",
+        "test": "SILENT=true ./node_modules/.bin/jest --runInBand --detectOpenHandles --collectCoverage=true '/specs/unit-tests'",
+        "test:integration": "LOG_LEVEL=error jest --runInBand --detectOpenHandles --collectCoverage=false '/specs/integration'",
+        "test:silent": "SILENT=true jest --runInBand --detectOpenHandles "
+    },
+    "author": "Programmers",
+    "license": "ISC",
+    "dependencies": {
+        "@types/node": "^13.13.26",
+        "@types/redis": "^2.8.31",
+        "async-local-storage": "^2.3.1",
+        "axios": "^0.19.2",
+        "crypto-js": "^4.0.0",
+        "dotenv": "^8.2.0",
+        "http-status-codes": "^1.4.0",
+        "moment": "^2.26.0",
+        "redis": "^3.1.2",
+        "uuid": "^7.0.2",
+        "v8-callsites": "^1.2.1",
+        "winston": "^3.2.1",
+        "xml2js": "^0.4.23"
+    },
+    "devDependencies": {
+        "@types/crypto-js": "^3.1.47",
+        "@types/jest": "^25.2.1",
+        "@types/uuid": "^7.0.2",
+        "@types/xml2js": "^0.4.5",
+        "@typescript-eslint/eslint-plugin": "^2.25.0",
+        "@typescript-eslint/parser": "^2.25.0",
+        "eslint": "^6.8.0",
+        "eslint-config-airbnb": "^18.1.0",
+        "eslint-config-airbnb-typescript": "^7.2.0",
+        "eslint-config-node": "^4.0.0",
+        "eslint-config-prettier": "^6.10.1",
+        "eslint-plugin-import": "^2.20.1",
+        "eslint-plugin-jest": "^24.1.2",
+        "eslint-plugin-jsx-a11y": "^6.2.3",
+        "eslint-plugin-node": "^11.0.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "husky": "^4.3.0",
+        "jest": "^25.3.0",
+        "prettier": "^2.0.2",
+        "redis-mock": "^0.56.3",
+        "ts-jest": "^25.4.0",
+        "typescript": "^3.9.7"
+    },
+    "files": [
+        "lib"
+    ],
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm build && npm run lint && npm test",
+            "pre-push": "npm run test:integration",
+            "...": "..."
+        }
+    }
+}

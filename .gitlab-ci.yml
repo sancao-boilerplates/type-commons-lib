@@ -1,0 +1,41 @@
+stages:
+    - lint
+    - unit-test
+    - integration-test
+
+lint:
+    stage: lint
+    image: node:lts-alpine
+    script:
+        - npm i typescript -g
+        - npm install
+        - npm run lint
+    only: 
+        - develop
+        - master
+
+unit-test:
+    stage: unit-test
+    image: node:lts-alpine
+    script:
+        - npm i typescript -g
+        - npm install
+        - npm run build
+        - echo $CI_JOB_ID | tee pipeline-id.info
+        - npm run test
+    only: 
+        - develop
+        - master
+
+integration-test:
+    stage: integration-test
+    image: node:lts-alpine
+    script:
+        - npm i typescript -g
+        - npm install
+        - npm run build
+        - echo $CI_JOB_ID | tee pipeline-id.info
+        - npm run test:integration
+    only: 
+        - develop
+        - master

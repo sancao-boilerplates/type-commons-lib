@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "downlevelIteration": true,
+        "module": "commonjs",
+        "declaration": true,
+        "outDir": "./lib",
+        "strict": false
+    },
+    "include": ["src/**/*", "specs/**/*"],
+    "exclude": ["specs/**/*"]
+}
