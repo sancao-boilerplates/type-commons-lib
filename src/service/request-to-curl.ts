@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 
 export class RequestToCurl {
     static convertToCurl(config: AxiosRequestConfig): string {
@@ -10,14 +10,14 @@ export class RequestToCurl {
         return curl;
     }
 
-    private static getHeaders(headers: { [index: string]: string } = {}): string {
+    private static getHeaders(headers: { [index: string]: string } | AxiosRequestHeaders = {}): string {
         let curlHeaders = '';
 
         Object.keys(headers).forEach((property: string) => {
             const header = `${property}:${headers[property]}`;
             curlHeaders = `${curlHeaders} -H '${header}'`;
         });
-
+        //devsuccess@turing.com
         return curlHeaders.trim();
     }
 

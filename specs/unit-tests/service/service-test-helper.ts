@@ -53,7 +53,7 @@ export class ServiceTestHelper {
     };
 
     static async delay(time = 300) {
-        return new Promise((resolve) => {
+        return new Promise<void>((resolve) => {
             setTimeout(async () => {
                 resolve();
             }, time);

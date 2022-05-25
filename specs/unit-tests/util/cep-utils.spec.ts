@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+process.env.GOOGLE_API_KEY = 'AIzaSyBBQmvbk9mJ_tzVywEaKue45mUwzjwnFhc';
 import { CepUtils } from '../../../src/utils/cep/cep-utils';
 import { UtilTestHelper } from './util-test-helper';
 import { CorreiosService } from '../../../src/utils/cep/correios-serivce';
@@ -37,8 +37,10 @@ describe('Utils - Cep Test Suite', () => {
         await expect(CepUtils.getAddressFrom('1111111-')).rejects.toThrow();
     });
 
-
     describe('getAddressFromGeolocation', () => {
+        beforeAll(() => {
+            process.env.GOOGLE_API_KEY = '12345678901234567890';
+        });
         const mockGoogleResponse = {
             results: [
                 {
@@ -110,8 +112,9 @@ describe('Utils - Cep Test Suite', () => {
 
         it('Should return the google service response on a valid lat and lng', async () => {
             // Given
-            mockedAxios = axios as jest.Mocked<typeof axios>;
-            mockedAxios.request.mockResolvedValue({ ...ServiceTestHelper.AxiosResponses.Ok, data: mockGoogleResponse });
+            const cepMock = jest.spyOn(GoogleService.prototype as any, 'get');
+            cepMock.mockResolvedValue(mockGoogleResponse);
+            const old = process.env.GOOGLE_API_KEY;
 
             // When
             const response = await CepUtils.getAddressFromGeoLocation(40.714232, -73.9612889);
@@ -131,8 +134,8 @@ describe('Utils - Cep Test Suite', () => {
 
         it('Should handle request failures', async () => {
             // Given
-            mockedAxios = axios as jest.Mocked<typeof axios>;
-            mockedAxios.request.mockImplementationOnce(() => {
+            const cepMock = jest.spyOn(GoogleService.prototype as any, 'get');
+            cepMock.mockImplementationOnce(() => {
                 throw new Error('Mock Error');
             });
 

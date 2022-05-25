@@ -78,7 +78,7 @@ describe('Generic Service Suite Test', () => {
             jest.clearAllMocks();
         });
 
-        it('Should respect all provided methods', async (done) => {
+        it('Should respect all provided methods', async () => {
             const spyRequest = jest.spyOn(GenericServiceTest.prototype as any, 'executeRequest').mockResolvedValue('');
             await service.get(url);
             expect(spyRequest.mock.calls[0][0]).toBe('GET');
@@ -90,10 +90,9 @@ describe('Generic Service Suite Test', () => {
             expect(spyRequest.mock.calls[3][0]).toBe('PATCH');
             await service.delete(url);
             expect(spyRequest.mock.calls[4][0]).toBe('DELETE');
-            done();
         });
 
-        it('Should respect RequestConfig', async (done) => {
+        it('Should respect RequestConfig', async () => {
             const requestConfig: AxiosRequestConfig = {
                 headers: { customHeader: 'header' },
                 method: 'DELETE',
@@ -118,10 +117,9 @@ describe('Generic Service Suite Test', () => {
             await service.delete(url, null, requestConfig);
             expect(spyRequest.mock.calls[4][0]).toBe('DELETE');
             expect(spyRequest.mock.calls[4][3]).toBe(requestConfig);
-            done();
         });
 
-        it('Should respect RequestOptions', async (done) => {
+        it('Should respect RequestOptions', async () => {
             const requestOptions: RequestOptions = {
                 returnHeaders: true,
             };
@@ -145,10 +143,9 @@ describe('Generic Service Suite Test', () => {
             await service.delete(url, null, null, requestOptions);
             expect(spyRequest.mock.calls[4][0]).toBe('DELETE');
             expect(spyRequest.mock.calls[4][4]).toBe(requestOptions);
-            done();
         });
 
-        it('Should allows payload as string', async (done) => {
+        it('Should allows payload as string', async () => {
             const requestConfig: AxiosRequestConfig = {
                 headers: { customHeader: 'header' },
                 method: 'DELETE',
@@ -179,10 +176,9 @@ describe('Generic Service Suite Test', () => {
             expect(spyRequest.mock.calls[4][0]).toBe('DELETE');
             expect(spyRequest.mock.calls[4][2]).toBe(stringPayload);
             expect(spyRequest.mock.calls[4][3]).toBe(requestConfig);
-            done();
         });
 
-        it('Should allows payload as object', async (done) => {
+        it('Should allows payload as object', async () => {
             const requestConfig: AxiosRequestConfig = {
                 headers: { customHeader: 'header' },
                 method: 'DELETE',
@@ -213,20 +209,18 @@ describe('Generic Service Suite Test', () => {
             expect(spyRequest.mock.calls[4][0]).toBe('DELETE');
             expect(spyRequest.mock.calls[4][2]).toBe(objectPayload);
             expect(spyRequest.mock.calls[4][3]).toBe(requestConfig);
-            done();
         });
     });
 
     describe('ExecuteRequest', () => {
-        it('All request must have the correlationId Header', async (done) => {
+        it('All request must have the correlationId Header', async () => {
             const spy = jest.spyOn(mockedAxios, 'request');
             await service.get(url);
             const config: AxiosRequestConfig = spy.mock.calls[0][0];
             expect(config.headers[LoggerConstants.CorrelationIdHeader]).toBeTruthy();
-            done();
         });
 
-        it('Should reuse the logger Context CorrelatonId', async (done) => {
+        it('Should reuse the logger Context CorrelatonId', async () => {
             const spy = jest.spyOn(mockedAxios, 'request');
             const correlationId = 'someCorrelationId';
             LoggerContext.setCorrelationId(correlationId);
@@ -234,10 +228,9 @@ describe('Generic Service Suite Test', () => {
             const config: AxiosRequestConfig = spy.mock.calls[0][0];
             expect(config.headers[LoggerConstants.CorrelationIdHeader]).toBeTruthy();
             expect(config.headers[LoggerConstants.CorrelationIdHeader]).toBe(correlationId);
-            done();
         });
 
-        it('Should use the default AxiosRequestConfig in case no config has been provided', async (done) => {
+        it('Should use the default AxiosRequestConfig in case no config has been provided', async () => {
             const defaultConfig = service['requestConfig'];
             const spy = jest.spyOn(mockedAxios, 'request');
             await service.get(url);
@@ -245,10 +238,9 @@ describe('Generic Service Suite Test', () => {
             expect(config.timeout).toBe(defaultConfig.timeout);
             expect(config.baseURL).toBe(defaultConfig.baseURL);
             expect(config.headers[HttpHeaders.ContentType]).toBe(defaultConfig.headers[HttpHeaders.ContentType]);
-            done();
         });
 
-        it('Should keep the function http method', async (done) => {
+        it('Should keep the function http method', async () => {
             const newConfig: AxiosRequestConfig = {
                 method: 'delete',
             };
@@ -256,9 +248,8 @@ describe('Generic Service Suite Test', () => {
             await service.get(url, newConfig);
             const config: AxiosRequestConfig = spy.mock.calls[0][0];
             expect(config.method).toBe('GET');
-            done();
         });
-        it('Should keep the function call http url', async (done) => {
+        it('Should keep the function call http url', async () => {
             const newConfig: AxiosRequestConfig = {
                 url: 'newUrl',
             };
@@ -266,9 +257,8 @@ describe('Generic Service Suite Test', () => {
             await service.get(url, newConfig);
             const config: AxiosRequestConfig = spy.mock.calls[0][0];
             expect(config.url).toBe(url);
-            done();
         });
-        it('Should keep the function call payload', async (done) => {
+        it('Should keep the function call payload', async () => {
             const newConfig: AxiosRequestConfig = {
                 data: 'newPayload',
             };
@@ -276,9 +266,8 @@ describe('Generic Service Suite Test', () => {
             await service.post(url, 'payload', newConfig);
             const config: AxiosRequestConfig = spy.mock.calls[0][0];
             expect(config.data).toBe('payload');
-            done();
         });
-        it('Should keep the new request config but url, payload and method', async (done) => {
+        it('Should keep the new request config but url, payload and method', async () => {
             const newConfig: AxiosRequestConfig = {
                 auth: {
                     password: 'psw',
@@ -292,7 +281,6 @@ describe('Generic Service Suite Test', () => {
             expect(config.auth).toBe(newConfig.auth);
             expect(config.headers.custom).toBeTruthy();
             expect(config.headers.custom).toBe(newConfig.headers.custom);
-            done();
         });
     });
 });

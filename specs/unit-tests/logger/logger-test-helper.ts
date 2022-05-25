@@ -31,7 +31,7 @@ export class LoggerTestHelper {
     }
 
     public async call1(id: string) {
-        await new Promise((resolve) => {
+        await new Promise<void>((resolve) => {
             setTimeout(() => {
                 Logger.debug(`Call 1 - ${id}`);
                 return resolve();
@@ -40,7 +40,7 @@ export class LoggerTestHelper {
     }
 
     public async call2(id: string) {
-        await new Promise((resolve) => {
+        await new Promise<void>((resolve) => {
             setTimeout(() => {
                 Logger.debug(`Call 2 - ${id}`);
                 return resolve();

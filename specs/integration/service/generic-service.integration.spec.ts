@@ -1,10 +1,10 @@
+process.env.NODE_ENV = 'test';
 import { GenericServiceTest } from '../../unit-tests/service/test-generic-service';
-
 describe('[Integration] Generic Service', () => {
     let service: GenericServiceTest;
     const url = 'commons-lib/public-mocks';
     beforeEach(() => {
-        service = new GenericServiceTest({ baseUrl: 'http://api-dev.digital.com.br' });
+        service = new GenericServiceTest({ baseUrl: 'https://tslib.free.beeceptor.com' });
     });
 
     it('[GET] should do request successfully', async () => {

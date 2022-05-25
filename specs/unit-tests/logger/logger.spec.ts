@@ -75,54 +75,45 @@ describe('Logger Suite Test', () => {
             Logger.warn(undefined);
         }).not.toThrow();
     });
-    
+
     describe('CorrelationId', () => {
-        it('Should keep correlationId among concurrency async calls', (done) => {
+        it('Should keep correlationId among concurrency async calls', () => {
             try {
                 loggerHelper.chainCall1('1', 50).then((result) => {
                     expect(result).toEqual('1');
-                    done();
                 });
 
                 loggerHelper.chainCall1('2', 10).then((result) => {
                     expect(result).toEqual('2');
                 });
-            } catch (err) {
-                done(err);
-            }
+            } catch (err) {}
         });
 
-        it('Logger should respect the correlationId chain', (done) => {
+        it('Logger should respect the correlationId chain', () => {
             try {
                 Logger.debug();
                 loggerHelper.chainCall1('1', 50).then((result) => {
                     expect(result).toEqual('1');
-                    done();
                 });
 
                 loggerHelper.chainCall1('2', 10).then((result) => {
                     expect(result).toEqual('2');
                 });
-            } catch (err) {
-                done(err);
-            }
+            } catch (err) {}
         });
     });
 
     describe('Decorator', () => {
-        it('test log async decorator ', async (done) => {
+        it('test log async decorator ', async () => {
             loggerHelper.testLogDecorator();
             const result = await loggerHelper.testAsyncLogDecorator();
             Logger.debug(result);
-            done();
         });
 
-        it('test log throw async decorator ', async (done) => {
+        it('test log throw async decorator ', async () => {
             try {
                 await loggerHelper.testAsyncThrowLogDecorator();
-            } catch (err) {
-                done();
-            }
+            } catch (err) {}
         });
 
         it('test log throw decorator ', () => {

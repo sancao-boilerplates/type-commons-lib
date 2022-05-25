@@ -6,8 +6,8 @@
         "!**/vendor/**"
     ],
     "transform": {
-        "^.+\\.tsx?$": "ts-jest"
-    },
+        "^.+\\.ts?$": "ts-jest"
+      },
     "moduleFileExtensions": [
         "ts",
         "js",
