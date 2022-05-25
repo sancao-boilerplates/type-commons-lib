@@ -1,3 +1,4 @@
+import { AxiosRequestHeaders } from 'axios';
 export interface ServiceOptions {
     /**
      *  Base service URL
@@ -11,7 +12,7 @@ export interface ServiceOptions {
     /**
      * The default service timeout in seconds
      */
-    headers?: object;
+    headers?: AxiosRequestHeaders;
     /**
      * The Class responsible for Logging
      */
