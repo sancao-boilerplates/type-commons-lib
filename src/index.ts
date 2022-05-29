@@ -1,8 +1,9 @@
 /* eslint-disable import/export */
-import * as HttpStatusCode from 'http-status-codes';
-
+export * from './status-code';
 export * from './logger';
 export * from './service';
 export * from './utils';
 export * from './cache';
-export { HttpStatusCode };
+export * from './request-decorator';
+export * from './dependency-injector';
+export * from './serverless-handler';
