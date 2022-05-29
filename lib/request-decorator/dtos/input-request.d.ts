@@ -3,9 +3,9 @@ export interface InputRequest {
     requestId: string;
     method: HttpMethod;
     rawRequest: unknown;
-    queryParams?: Map<string, unknown> | unknown;
-    pathParams?: Map<string, unknown>;
-    headers?: Map<string, unknown>;
+    queryParams?: unknown;
+    pathParams?: unknown;
+    headers?: unknown;
     body?: string | Map<string, unknown> | unknown;
     host?: string;
     path?: string;

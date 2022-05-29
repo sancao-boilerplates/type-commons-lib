@@ -5,7 +5,7 @@ export interface RequestLog {
     method: string;
     userAgent: string;
     host: string;
-    headers: Map<string, unknown>;
-    queryString: Map<string, unknown> | unknown;
-    pathParams: Map<string, unknown>;
+    headers: unknown;
+    queryString: unknown;
+    pathParams: unknown;
 }
