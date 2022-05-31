@@ -1,3 +1,5 @@
+import { Logger } from '../logger';
+
 export class RegexUtils {
     public static readonly CLEAR_NO_DIGIT_REGEX = /[^\d]+/g;
 
@@ -20,4 +22,20 @@ export class RegexUtils {
     public static readonly TIME_REGEX = /(\d{2}):(\d{2}):(\d{2})/;
 
     public static readonly CEP_REGEX = /\d{8}/;
+
+    public static readonly BEARER_REGEX = /(?<=Bearer\s).*/;
+
+    static extract(value: string, regex: any): string {
+        try {
+            if (!value) return null;
+            const result = value.match(regex);
+            if (result && result.length > 0) {
+                return result[0];
+            }
+            return null;
+        } catch (err) {
+            Logger.error(err);
+            return null;
+        }
+    }
 }

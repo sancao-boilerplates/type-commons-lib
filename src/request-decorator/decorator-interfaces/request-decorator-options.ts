@@ -1,7 +1,11 @@
 export interface RequestDecoratorOptions {
     /**
+     * @auth {boolean} Should validate the
+     */
+    auth?: boolean;
+    /**
      * Define the response status code
      * @statusCode
      */
-    statusCode?: number;
+    roles?: Array<string>;
 }

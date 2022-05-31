@@ -48,7 +48,7 @@ export abstract class GenericServerlessHandler<E, C> {
 
     private defaultHandlerError(err: unknown): HttpResponse {
         if (err instanceof HttpGenericError) {
-            return new HttpResponse(err.statusCode, err.message, err);
+            return new HttpResponse(err.statusCode, { message: err.message, error: err.data });
         }
         if (err instanceof HttpResponse) {
             return err;
@@ -72,7 +72,7 @@ export abstract class GenericServerlessHandler<E, C> {
         return this.handleHttpResponse(httpResponse);
     }
 
-    public async applyCall<T>(type: ObjectType<T>, method: string, p0: E, p1: C, dbConnection?: Promise<void>): Promise<unknown> {
+    public async applyCall<T>(type: ObjectType<T>, method: string, p0: E, p1: C, dbConnection?: Function): Promise<unknown> {
         const start = new Date();
         const inputRequest: InputRequest = this.getRawRequest(p0, p1);
         try {
@@ -82,15 +82,16 @@ export abstract class GenericServerlessHandler<E, C> {
             const response = await controller[method](inputRequest);
             return this.defaultHandleSuccessResponse(response, inputRequest, start);
         } catch (err) {
+            Logger.error(err);
             const httpResponse = this.defaultHandlerError(err);
             this.logResponse(inputRequest, httpResponse, start);
             return this.handleHttpResponse(httpResponse);
         }
     }
 
-    private async conectDb(connect: Promise<void>): Promise<void> {
+    private async conectDb(connect: Function): Promise<void> {
         if (connect) {
-            await connect;
+            await connect();
         }
     }
 }

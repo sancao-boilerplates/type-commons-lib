@@ -1,18 +1,18 @@
-import { Request, Response } from 'express';
 import { LoggerConstants } from '../../constants';
 import { Injectable } from '../../dependency-injector';
 import { HttpResponse, InputRequest } from '../../request-decorator/dtos';
 import { GenericServerlessHandler } from './generic-serverless-handler';
 import { v4 as uuid } from 'uuid';
 import { HttpMethod } from '../../request-decorator/types';
+import { GcpEvent, GcpResponse } from '../types/gcp';
 
 @Injectable('gcp')
 export class GcpServerlessHandler extends GenericServerlessHandler<unknown, unknown> {
-    private resp: Response;
+    private resp: GcpResponse;
     protected handleHttpResponse(response: HttpResponse): unknown {
         return this.resp.status(response.status).send(response.data);
     }
-    protected getRawRequest(event: Request, response: Response): InputRequest {
+    protected getRawRequest(event: GcpEvent, response: GcpResponse): InputRequest {
         this.resp = response;
         return {
             requestId: (event.headers[LoggerConstants.CorrelationIdHeader] ?? uuid()) as string,

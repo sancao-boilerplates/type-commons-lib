@@ -68,22 +68,22 @@ export class DateUtils {
         const duration = moment.duration(end.diff(start));
 
         switch (unitTime) {
-        case UnitOfTime.MILISECONDS:
-            return duration.asMilliseconds();
-        case UnitOfTime.SECOND:
-            return duration.asSeconds();
-        case UnitOfTime.MINUTE:
-            return duration.asMinutes();
-        case UnitOfTime.DAY:
-            return duration.asDays();
-        case UnitOfTime.WEEK:
-            return duration.asWeeks();
-        case UnitOfTime.MONTH:
-            return duration.asMonths();
-        case UnitOfTime.YEAR:
-            return duration.asYears();
-        default:
-            return duration.asHours();
+            case UnitOfTime.MILISECONDS:
+                return duration.asMilliseconds();
+            case UnitOfTime.SECOND:
+                return duration.asSeconds();
+            case UnitOfTime.MINUTE:
+                return duration.asMinutes();
+            case UnitOfTime.DAY:
+                return duration.asDays();
+            case UnitOfTime.WEEK:
+                return duration.asWeeks();
+            case UnitOfTime.MONTH:
+                return duration.asMonths();
+            case UnitOfTime.YEAR:
+                return duration.asYears();
+            default:
+                return duration.asHours();
         }
     }
 
@@ -100,5 +100,12 @@ export class DateUtils {
         }
 
         return list;
+    }
+
+    static compare(start: string, end: string): number {
+        const startDate = DateUtils.parseToMoment(start);
+        const endDate = DateUtils.parseToMoment(end);
+
+        return startDate.isAfter(endDate) ? 1 : startDate.isSame(endDate) ? 0 : -1;
     }
 }

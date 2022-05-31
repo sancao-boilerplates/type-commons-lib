@@ -10,4 +10,6 @@ export declare class RegexUtils {
     static readonly DATE_REGEX: RegExp;
     static readonly TIME_REGEX: RegExp;
     static readonly CEP_REGEX: RegExp;
+    static readonly BEARER_REGEX: RegExp;
+    static extract(value: string, regex: any): string;
 }

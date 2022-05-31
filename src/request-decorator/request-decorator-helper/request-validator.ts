@@ -34,8 +34,14 @@ export class RequestValidator {
     private static getParameterOurce(param: InputArgumentParam, arg: InputRequest): unknown {
         switch (param?.type) {
             case ParamType.Body:
+                if (param.paramName) {
+                    return arg?.body ? arg?.body[param.paramName] : undefined;
+                }
                 return arg.body;
             case ParamType.Header:
+                if (param.paramName) {
+                    return arg?.headers ? arg?.headers[param.paramName] : undefined;
+                }
                 return arg.headers;
             case ParamType.Query:
                 if (param.paramName) {
@@ -58,7 +64,7 @@ export class RequestValidator {
             parameterValue = { [param.paramName]: parameterValue };
         }
         if (param.validateSchema) {
-            const result = param.validateSchema.validate(parameterValue);
+            const result = param.validateSchema.validate(parameterValue || {}, { allowUnknown: param.allowAditionalProperties || false });
             if (result.error) {
                 errors.push({
                     source: RequestValidator.getParameterSourceDesc(param.type),

@@ -17,4 +17,5 @@ export declare class DateUtils {
         date: string;
         dayOdWeek: number;
     }>;
+    static compare(start: string, end: string): number;
 }

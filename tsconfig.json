@@ -7,8 +7,8 @@
         "module": "commonjs",
         "declaration": true,
         "outDir": "./lib",
-        "strict": false
+        "strict": false,
     },
-    "include": ["src/**/*", "specs/**/*"],
+    "include": ["src/**/*"],
     "exclude": ["specs/**/*"]
 }

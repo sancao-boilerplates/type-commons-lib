@@ -7,7 +7,7 @@ declare class AServerlessHandler {
      * Use ServerlessProvider
      * @param provider
      */
-    static setProvider(provider: ServerlessProvider): void;
+    setProvider(provider: ServerlessProvider): void;
     /**
      * Provide your controller type
      * @param controllerType
@@ -22,7 +22,7 @@ declare class AServerlessHandler {
      * Will be returned the serverlerss handler function
      * @returns
      */
-    handler<T>(controllerType: ObjectType<T>, method: string, options?: ServerlessHandlerOptions): (p0: unknown, p1: unknown) => unknown;
+    handler<T>(controllerType: ObjectType<T>, method: string, options?: ServerlessHandlerOptions): (p0: unknown, p1: unknown, callback?: Function) => unknown;
     private getHandlerProvicer;
 }
 declare const ServerlessHandler: AServerlessHandler;

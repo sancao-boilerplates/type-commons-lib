@@ -2,8 +2,14 @@ import * as Joi from 'joi';
 
 export interface InputParamOptions {
     /**
-     * Schema for validation
-     * @validateSchema
+     *
+     * @validateSchema {Joi.object} Schema for validation
      */
     validateSchema?: Joi.ObjectSchema;
+    /**
+     *
+     * @allowAditionalProperties {boolean} Should allow aditional properties ? default false
+     * @default false
+     */
+    allowAditionalProperties?: boolean;
 }

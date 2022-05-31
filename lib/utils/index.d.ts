@@ -4,3 +4,6 @@ export * from './phone-utils';
 export * from './unit-of-time';
 export * from './cep/cep-utils';
 export * from './cep/cep-type';
+export * from './jwt-utils';
+export * from './jwt-expired-exception';
+export * from './regex-utils';

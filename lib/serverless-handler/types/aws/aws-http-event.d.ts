@@ -34,16 +34,16 @@ export interface AwsHttpEventRequestContext {
     stage: string;
 }
 export interface AwsHttpEvent {
-    body: null;
-    headers: Map<string, unknown>;
-    httpMethod: string;
-    isBase64Encoded: boolean;
-    multiValueHeaders: Map<string, unknown>;
-    multiValueQueryStringParameters: Map<string, unknown>;
-    path: string;
-    pathParameters: Map<string, unknown>;
-    queryStringParameters: Map<string, unknown>;
-    requestContext: AwsHttpEventRequestContext;
-    resource: string;
-    stageVariables: string;
+    body?: null;
+    headers?: unknown;
+    httpMethod?: string;
+    isBase64Encoded?: boolean;
+    multiValueHeaders?: Map<string, unknown>;
+    multiValueQueryStringParameters?: Map<string, unknown>;
+    path?: string;
+    pathParameters?: Map<string, unknown>;
+    queryStringParameters?: Map<string, unknown>;
+    requestContext?: AwsHttpEventRequestContext;
+    resource?: string;
+    stageVariables?: string;
 }

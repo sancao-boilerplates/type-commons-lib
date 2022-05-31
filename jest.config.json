@@ -5,6 +5,7 @@
         "!**/node_modules/**",
         "!**/vendor/**"
     ],
+    "plugins": ["transform-decorators-legacy"],
     "transform": {
         "^.+\\.ts?$": "ts-jest"
       },

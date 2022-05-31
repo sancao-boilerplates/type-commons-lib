@@ -9,21 +9,47 @@ import { RequestDecoratorOptions } from '../decorator-interfaces';
 import { BaseHttpMethodDecorator } from './base-http-method-decorator';
 
 class HttpMethodDecorator extends BaseHttpMethodDecorator {
-    Get = (options?: RequestDecoratorOptions) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) => HttpMethodDecorator.request(target, propertyKey, propDesc, 'GET', options);
+    /**
+     * Set method as a Http Get Method
+     * @param statusCode {number} Response status code
+     */
+    Get = (statusCode?: number) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) => HttpMethodDecorator.request(target, propertyKey, propDesc, 'GET', statusCode);
 
-    Post = (options?: RequestDecoratorOptions) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) => HttpMethodDecorator.request(target, propertyKey, propDesc, 'POST', options);
+    /**
+     * Set method as a Http Post Method
+     * @param statusCode {number} Response status code
+     */
+    Post = (statusCode?: number) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) => HttpMethodDecorator.request(target, propertyKey, propDesc, 'POST', statusCode);
 
-    Put = (options?: RequestDecoratorOptions) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) => HttpMethodDecorator.request(target, propertyKey, propDesc, 'PUT', options);
+    /**
+     * Set method as a Http Put Method
+     * @param statusCode {number} Response status code
+     */
+    Put = (statusCode?: number) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) => HttpMethodDecorator.request(target, propertyKey, propDesc, 'PUT', statusCode);
 
-    Patch = (options?: RequestDecoratorOptions) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) => HttpMethodDecorator.request(target, propertyKey, propDesc, 'PATCH', options);
+    /**
+     * Set method as a Http Patch Method
+     * @param statusCode {number} Response status code
+     */
+    Patch = (statusCode?: number) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) => HttpMethodDecorator.request(target, propertyKey, propDesc, 'PATCH', statusCode);
 
-    Delete = (options?: RequestDecoratorOptions) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) =>
-        HttpMethodDecorator.request(target, propertyKey, propDesc, 'DELETE', options);
+    /**
+     * Set method as a Http Delete Method
+     * @param statusCode {number} Response status code
+     */
+    Delete = (statusCode?: number) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) => HttpMethodDecorator.request(target, propertyKey, propDesc, 'DELETE', statusCode);
 
-    Options = (options?: RequestDecoratorOptions) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) =>
-        HttpMethodDecorator.request(target, propertyKey, propDesc, 'OPTIONS', options);
+    /**
+     * Set method as a Http Options Method
+     * @param statusCode {number} Response status code
+     */
+    Options = (statusCode?: number) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) => HttpMethodDecorator.request(target, propertyKey, propDesc, 'OPTIONS', statusCode);
 
-    Head = (options?: RequestDecoratorOptions) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) => HttpMethodDecorator.request(target, propertyKey, propDesc, 'HEAD', options);
+    /**
+     * Set method as a Http Head Method
+     * @param statusCode {number} Response status code
+     */
+    Head = (statusCode?: number) => (target: object, propertyKey: string, propDesc: PropertyDescriptor) => HttpMethodDecorator.request(target, propertyKey, propDesc, 'HEAD', statusCode);
 }
 const base = new HttpMethodDecorator();
 export const { Get, Post, Put, Delete, Head, Options, Patch } = base;

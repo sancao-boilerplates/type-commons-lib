@@ -14,7 +14,7 @@ class AServerlessHandler {
      * Use ServerlessProvider
      * @param provider
      */
-    static setProvider(provider: ServerlessProvider) {
+    public setProvider(provider: ServerlessProvider) {
         AServerlessHandler.provider = provider ?? ServerlessProvider.AWS;
     }
 
@@ -32,16 +32,25 @@ class AServerlessHandler {
      * Will be returned the serverlerss handler function
      * @returns
      */
-    public handler<T>(controllerType: ObjectType<T>, method: string, options?: ServerlessHandlerOptions): (p0: unknown, p1: unknown) => unknown {
-        return async (p0: unknown, p1: unknown) => {
+    public handler<T>(controllerType: ObjectType<T>, method: string, options?: ServerlessHandlerOptions): (p0: unknown, p1: unknown, callback?: Function) => unknown {
+        return async (p0: unknown, p1: unknown, callback?: Function) => {
             const start = new Date();
             try {
                 const handler = this.getHandlerProvicer(options);
 
-                const response = await handler.applyCall(controllerType, method, p0, p1);
-
+                const response = await handler.applyCall(controllerType, method, p0, p1, options?.dbConection);
+                if (callback) {
+                    callback(null, response);
+                    return;
+                }
                 return response;
             } catch (err) {
+                if (callback) {
+                    callback({
+                        statusCode: err.status ?? HttpStatusCode.INTERNAL_SERVER_ERROR,
+                    });
+                    return;
+                }
                 return {
                     statusCode: err.status ?? HttpStatusCode.INTERNAL_SERVER_ERROR,
                 };
@@ -50,7 +59,7 @@ class AServerlessHandler {
     }
 
     private getHandlerProvicer(options?: ServerlessHandlerOptions): GenericServerlessHandler<unknown, unknown> {
-        const provider = options.serverlessProvider ?? AServerlessHandler.provider;
+        const provider = options?.serverlessProvider || AServerlessHandler.provider;
 
         Injector.set(ServerlessProvider.GCP, new GcpServerlessHandler());
         if (ServerlessProvider.GCP == provider) {
