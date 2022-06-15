@@ -13,7 +13,7 @@ export class AuthValidator {
         let token;
         try {
             const header = options?.header || 'Authorization';
-            const headerValue: string = request.headers ? request.headers[header] : null;
+            const headerValue: string = request.headers ? request.headers[header] || request.headers[header.toLowerCase()] : null;
             const token = headerValue ? RegexUtils.extract(headerValue, RegexUtils.BEARER_REGEX) : null;
             if (!token) {
                 Logger.error('Token not found', { header, headerValue, options, request });

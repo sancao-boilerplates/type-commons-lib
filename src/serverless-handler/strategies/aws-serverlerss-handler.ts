@@ -31,7 +31,7 @@ export class AwsServerlessHandler extends GenericServerlessHandler<AwsHttpEvent,
     private getBody(event: AwsHttpEvent): unknown {
         if (!event.body) return event.body;
         event.headers = event.headers || {};
-        const contentType = event.headers['Content-Type'] || null;
+        const contentType = event.headers['Content-Type'] || event.headers['content-type'] || null;
         if ('application/json' == contentType) {
             return JSON.parse(event.body);
         }
