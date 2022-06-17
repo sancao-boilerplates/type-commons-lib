@@ -7,3 +7,4 @@ export * from './cep/cep-type';
 export * from './jwt-utils';
 export * from './jwt-expired-exception';
 export * from './regex-utils';
+export * from './pagination-dto';

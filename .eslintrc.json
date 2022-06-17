@@ -40,6 +40,13 @@
     "overrides": [],
     "settings": {
       "import/resolver": {
+        "alias": {
+          "map": [
+            ["@src", "./src"],
+            ["@tests", "./specs"]
+          ],
+          "extensions": [".ts", ".js"]
+        },
         "node": {
           "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
