@@ -58,11 +58,11 @@ const log = (target: any, key: PropertyKey, descriptor: PropertyDescriptor) => {
     descriptor.value = function () {
         const start = new Date();
         const args = handleParameters([], arguments);
-
+        const constructorName = this && this.constructor ? this.constructor.name : 'unknown';
         const logTrace: LogTrace = {
             action: LogActions.MethodTrace,
-            method: `${this.constructor.name}.${String(key)}`,
-            class: this.constructor.name,
+            method: `${constructorName}.${String(key)}`,
+            class: constructorName,
             function: String(key),
             parameters: args,
             hasFailed: false,
