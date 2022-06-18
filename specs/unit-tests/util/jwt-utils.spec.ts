@@ -1,6 +1,6 @@
 import * as Jwt from 'jsonwebtoken';
 import { JwtUtils } from '../../../src';
-import { JwtEpiredError } from '../../../src/utils/jwt-expired-exception';
+import { JwtExpiredError } from '../../../src/utils/jwt-expired-exception';
 describe('[JwtUtils]', () => {
     const obj = {
         user: 'teste',
@@ -23,7 +23,8 @@ describe('[JwtUtils]', () => {
             expect(token).toEqual(expect.any(String));
             expect(token).toEqual('token');
             expect(signSpy).toHaveBeenCalledTimes(1);
-            expect(signSpy.mock.calls[0][2]['expiresIn']).toEqual(60);
+            const param = signSpy.mock.calls[0][2] as object;
+            expect(param['expiresIn']).toEqual(60);
         });
     });
     describe('[validate]', () => {
@@ -38,7 +39,7 @@ describe('[JwtUtils]', () => {
         it('In case time is expired shoudl throw JWT Error', async () => {
             const tokes = JwtUtils.generate(obj, { secreteKey: secret, expiration: 1 });
             await new Promise<void>((resolve) => setTimeout(() => resolve(), 1000));
-            expect(() => JwtUtils.validate(tokes, secret)).toThrow(JwtEpiredError);
+            expect(() => JwtUtils.validate(tokes, secret)).toThrow(JwtExpiredError);
         });
         it('Should use enviroment variable as secret', async () => {
             const old = process.env;

@@ -11,7 +11,7 @@ describe('[ServerlessHandler] - Suite Test', () => {
         let httpMock;
         beforeEach(() => {
             jest.clearAllMocks();
-            mock = jest.spyOn(ServerlessHandler as any, 'getHandlerProvicer');
+            mock = jest.spyOn(ServerlessHandler as any, 'getHandlerProvider');
         });
 
         it('In case thow an error should return Internal Server Error (500) as status code', async () => {
@@ -20,14 +20,14 @@ describe('[ServerlessHandler] - Suite Test', () => {
                 throw new Error();
             });
             const handler = ServerlessHandler.handler(ControllerHelper, 'getTest');
-            const result = await handler(RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext);
+            const result = (await handler(RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext)) as object;
             expect(result['statusCode']).toEqual(HttpStatusCode.INTERNAL_SERVER_ERROR);
         });
 
         describe('[AWS]', () => {
             beforeEach(() => {
                 jest.clearAllMocks();
-                mock = jest.spyOn(ServerlessHandler as any, 'getHandlerProvicer');
+                mock = jest.spyOn(ServerlessHandler as any, 'getHandlerProvider');
                 httpMock = jest.spyOn(AwsServerlessHandler.prototype as any, 'applyCall');
                 httpMock.mockResolvedValue(new HttpResponse(HttpStatusCode.OK, 'OK'));
             });
