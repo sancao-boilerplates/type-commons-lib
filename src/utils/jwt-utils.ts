@@ -1,6 +1,6 @@
 import * as Jwt from 'jsonwebtoken';
 import { log, Logger } from '../logger';
-import { JwtEpiredError } from './jwt-expired-exception';
+import { JwtExpiredError } from './jwt-expired-exception';
 export interface JwtOptions {
     /**
      * @secreteKey {string} The JWT Secret key to security your token, it also can be defined on your environment variabls JWT_SECRET
@@ -15,7 +15,7 @@ export interface JwtOptions {
 
 export abstract class JwtUtils {
     /**
-     * Generate Jwt token
+     * Generate Jwt token, you can set an JWT_SECRET environment variable then it will be used to sign your jwt token.
      * @value {string | Buffer | object} the parameter to be encoded in a token
      * @options {JwtOptions} Set the secret and expiration for your token
      * @returns {string} Jwt Token
@@ -40,7 +40,7 @@ export abstract class JwtUtils {
             return result as unknown as T;
         } catch (err) {
             if (err instanceof Jwt.TokenExpiredError) {
-                throw new JwtEpiredError(err.message, err.expiredAt);
+                throw new JwtExpiredError(err.message, err.expiredAt);
             }
             Logger.error(err);
             throw err;

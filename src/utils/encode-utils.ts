@@ -18,9 +18,14 @@ export class EncodeUtils {
         }
     }
 
+    /**
+     * Encrypt your string or object using CryptoJs lib, provide a secret or set CRYPT_SECRET environment variable
+     * @param data {string | object}
+     * @returns encrypted {string}
+     */
     @log
-    static encryptAesId(data: string | object): string {
-        const encrypted = CryptoJS.AES.encrypt(data.toString(), AppConstants.ENCRYPT_SECRET).toString();
+    static encryptAesId(data: string | object, secret?: string): string {
+        const encrypted = CryptoJS.AES.encrypt(data.toString(), secret || AppConstants.ENCRYPT_SECRET).toString();
         const response = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(encrypted));
         return response;
     }

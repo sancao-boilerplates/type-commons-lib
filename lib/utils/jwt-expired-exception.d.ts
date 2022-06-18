@@ -1,4 +1,4 @@
-export declare class JwtEpiredError extends Error {
+export declare class JwtExpiredError extends Error {
     expiredAt: Date;
     constructor(message: string, expiredAt: Date);
 }

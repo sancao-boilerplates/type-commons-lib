@@ -1,14 +1,12 @@
 import { Injector, ObjectType } from '../dependency-injector';
-
-import { Logger } from '../logger';
 import { HttpStatusCode } from '../status-code';
 import { AwsServerlessHandler, GcpServerlessHandler } from './strategies';
 import { GenericServerlessHandler } from './strategies/generic-serverless-handler';
-import { AwsContext, AwsHttpEvent, ServerlessHandlerOptions, ServerlessProvider } from './types';
+import { ServerlessHandlerOptions, ServerlessProvider } from './types';
 
 class AServerlessHandler {
-    static provider: ServerlessProvider = ServerlessProvider.AWS;
-
+    private static provider: ServerlessProvider = ServerlessProvider.AWS;
+    private static dbConnection?: Function;
     /**
      * Define the default cloud serverless Provided. Currently accept AWS or GCP.
      * Use ServerlessProvider
@@ -19,13 +17,21 @@ class AServerlessHandler {
     }
 
     /**
+     * Define a db connection function which will be called on every call.
+     * @param dbConnection
+     */
+    public setDbConnection(dbConnection: Function) {
+        AServerlessHandler.dbConnection = dbConnection;
+    }
+
+    /**
      * Provide your controller type
      * @param controllerType
      *
      * The name of the method will be called
      * @param method
      *
-     * Infor if you have a connection DB or any other promise wich is nedded to be resolved before you function,
+     * Info if you have a connection DB or any other promise which is needed to be resolved before you function,
      * also you can specify your cloud function provider
      * @param options
      *
@@ -36,9 +42,9 @@ class AServerlessHandler {
         return async (p0: unknown, p1: unknown, callback?: Function) => {
             const start = new Date();
             try {
-                const handler = this.getHandlerProvicer(options);
-
-                const response = await handler.applyCall(controllerType, method, p0, p1, options?.dbConection);
+                const handler = this.getHandlerProvider(options);
+                const dbConnection = options?.dbConnection || AServerlessHandler.dbConnection;
+                const response = await handler.applyCall(controllerType, method, p0, p1, dbConnection);
                 if (callback) {
                     callback(null, response);
                     return;
@@ -58,7 +64,7 @@ class AServerlessHandler {
         };
     }
 
-    private getHandlerProvicer(options?: ServerlessHandlerOptions): GenericServerlessHandler<unknown, unknown> {
+    private getHandlerProvider(options?: ServerlessHandlerOptions): GenericServerlessHandler<unknown, unknown> {
         const provider = options?.serverlessProvider || AServerlessHandler.provider;
 
         Injector.set(ServerlessProvider.GCP, new GcpServerlessHandler());
