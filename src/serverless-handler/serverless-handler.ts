@@ -1,4 +1,5 @@
 import { Injector, ObjectType } from '../dependency-injector';
+import { log, Logger } from '../logger';
 import { HttpStatusCode } from '../status-code';
 import { AwsServerlessHandler, GcpServerlessHandler } from './strategies';
 import { GenericServerlessHandler } from './strategies/generic-serverless-handler';
@@ -42,16 +43,26 @@ class AServerlessHandler {
         return async (p0: unknown, p1: unknown, callback?: Function) => {
             const start = new Date();
             try {
+                Logger.debug(p0);
+                Logger.debug(p1);
+                if (p1 && p1['callbackWaitsForEmptyEventLoop']) {
+                    p1['callbackWaitsForEmptyEventLoop'] = false;
+                }
+
                 const handler = this.getHandlerProvider(options);
                 const dbConnection = options?.dbConnection || AServerlessHandler.dbConnection;
                 const response = await handler.applyCall(controllerType, method, p0, p1, dbConnection);
+                Logger.info('Lambda executed');
                 if (callback) {
+                    Logger.info('Calling callback function', { response });
                     callback(null, response);
                     return;
                 }
                 return response;
             } catch (err) {
+                Logger.error('Serverless Handler Error', err);
                 if (callback) {
+                    Logger.info('Calling callback response function');
                     callback({
                         statusCode: err.status ?? HttpStatusCode.INTERNAL_SERVER_ERROR,
                     });
@@ -64,6 +75,7 @@ class AServerlessHandler {
         };
     }
 
+    @log
     private getHandlerProvider(options?: ServerlessHandlerOptions): GenericServerlessHandler<unknown, unknown> {
         const provider = options?.serverlessProvider || AServerlessHandler.provider;
 
