@@ -1,5 +1,6 @@
 import { LoggerConstants } from '../../constants';
 import { Injectable } from '../../dependency-injector';
+import { LoggerContext } from '../../logger';
 import { HttpResponse } from '../../request-decorator/dtos';
 import { InputRequest } from '../../request-decorator/dtos/input-request';
 import { HttpMethod } from '../../request-decorator/types';
@@ -12,6 +13,9 @@ export class AwsServerlessHandler extends GenericServerlessHandler<AwsHttpEvent,
         return {
             statusCode: response.status,
             body: response.data ? JSON.stringify(response.data) : null,
+            headers: {
+                'x-correlation-id': LoggerContext.getCorrelationId(),
+            },
         };
     }
     protected getRawRequest(event: AwsHttpEvent, context: AwsContext): InputRequest {
