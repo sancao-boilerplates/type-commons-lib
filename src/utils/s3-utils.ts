@@ -33,7 +33,24 @@ export class S3Utils {
                     ACL: isPublic ? 'public-read' : '',
                 })
                 .promise();
-            return `https://${bucketName}.s3.amazonaws.com/${key}.${type.ext}`;
+            return `https://${bucketName}.s3.amazonaws.com/${key}`;
+        } catch (error) {
+            Logger.error(error);
+            throw error;
+        }
+    }
+
+    @log
+    static async delete(bucketName: string, key: string): Promise<void> {
+        try {
+            const s3 = S3Utils.getS3();
+
+            await s3
+                .deleteObject({
+                    Bucket: bucketName,
+                    Key: key,
+                })
+                .promise();
         } catch (error) {
             Logger.error(error);
             throw error;

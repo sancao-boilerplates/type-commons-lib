@@ -13,6 +13,7 @@ export declare class S3Utils {
      * @returns {string}
      */
     static uploadFile(base64File: string, bucketName: string, key: string, isPublic?: boolean): Promise<string>;
+    static delete(bucketName: string, key: string): Promise<void>;
     static getFile(bucketName: string, key: string): Promise<S3.Body>;
     private static getS3;
 }
