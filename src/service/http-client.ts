@@ -6,9 +6,7 @@ import * as StatusCode from 'http-status-codes';
 import { v4 as uuid } from 'uuid';
 
 import { HttpGenericError } from './http-exceptions';
-import {
-    LoggerContext, Logger, LogActions,
-} from '../logger/log';
+import { LoggerContext, Logger, LogActions } from '../logger/log';
 import { LoggerConstants } from '../constants';
 import { RequestToCurl } from './request-to-curl';
 import { HttpHeaders } from './http-headers';
@@ -84,7 +82,7 @@ export abstract class HttpClient {
             ...requestConfig,
             method,
             url,
-            data: payload,
+            data: payload ?? method == 'GET' ? undefined : payload,
         };
         return config;
     }

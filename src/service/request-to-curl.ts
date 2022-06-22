@@ -35,7 +35,7 @@ export class RequestToCurl {
 
     private static getUrl(config: AxiosRequestConfig): string {
         if (config.baseURL) {
-            return `${config.baseURL}/${config.url}`;
+            return `${config.baseURL}${config.url}`;
         }
         return config.url;
     }
