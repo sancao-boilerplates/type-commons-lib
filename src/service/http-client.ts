@@ -82,7 +82,7 @@ export abstract class HttpClient {
             ...requestConfig,
             method,
             url,
-            data: payload ?? method == 'GET' ? undefined : payload,
+            data: !payload ?? method == 'GET' ? undefined : payload,
         };
         return config;
     }
