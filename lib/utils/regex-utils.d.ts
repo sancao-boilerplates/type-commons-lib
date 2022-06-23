@@ -12,4 +12,5 @@ export declare class RegexUtils {
     static readonly CEP_REGEX: RegExp;
     static readonly BEARER_REGEX: RegExp;
     static extract(value: string, regex: any): string;
+    static replace(regex: string | RegExp, value: string, replace: string, isGeneral?: boolean): string;
 }

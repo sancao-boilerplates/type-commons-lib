@@ -1,4 +1,4 @@
-import { Logger } from '../logger';
+import { log, Logger } from '../logger';
 
 export class RegexUtils {
     public static readonly CLEAR_NO_DIGIT_REGEX = /[^\d]+/g;
@@ -36,6 +36,20 @@ export class RegexUtils {
         } catch (err) {
             Logger.error(err);
             return null;
+        }
+    }
+
+    @log
+    static replace(regex: string | RegExp, value: string, replace: string, isGeneral: boolean = false): string {
+        try {
+            regex = typeof regex == 'string' ? new RegExp(regex, isGeneral ? 'g' : '') : regex;
+            if (!value) return null;
+            if (replace === null || replace === undefined) return value;
+
+            return value.replace(regex, replace);
+        } catch (err) {
+            Logger.error(err);
+            throw err;
         }
     }
 }
