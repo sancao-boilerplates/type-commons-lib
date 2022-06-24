@@ -1,6 +1,6 @@
 import { GenericCrudLogc } from './generic-crud-logic';
 import { PaginationDto } from '../utils';
-export declare abstract class GenericController<T> {
+export declare abstract class GenericCrudController<T> {
     protected logic: GenericCrudLogc<T>;
     constructor(logic: GenericCrudLogc<T>);
     create(body: T): Promise<void>;

@@ -6,7 +6,7 @@ import { GenericCrudLogc } from './generic-crud-logic';
 import { PaginationDto } from '../utils';
 import { PaginationSchema } from './schemas';
 
-export abstract class GenericController<T> {
+export abstract class GenericCrudController<T> {
     protected logic: GenericCrudLogc<T>;
 
     constructor(logic: GenericCrudLogc<T>) {
