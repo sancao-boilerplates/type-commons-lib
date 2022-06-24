@@ -12,7 +12,7 @@ export abstract class GenericCrudService<T> extends HttpService {
 
     @log
     async create(t: T): Promise<T> {
-        return await this.post(this.resource, t as object);
+        return await this.post(this.resource, t as unknown as object);
     }
 
     @log
@@ -31,7 +31,7 @@ export abstract class GenericCrudService<T> extends HttpService {
     @log
     async update(id: string, toUpdate: T): Promise<T> {
         const url = `${this.resource}/${id}`;
-        return this.patch(url, toUpdate as Object);
+        return this.patch(url, toUpdate as unknown as Object);
     }
 
     @log
