@@ -8,6 +8,7 @@ import { ServerlessHandlerOptions, ServerlessProvider } from './types';
 class AServerlessHandler {
     private static provider: ServerlessProvider = ServerlessProvider.AWS;
     private static dbConnection?: Function;
+    private static warmupPayload: string = 'serverless-plugin-warmup';
     /**
      * Define the default cloud serverless Provided. Currently accept AWS or GCP.
      * Use ServerlessProvider
@@ -25,6 +26,14 @@ class AServerlessHandler {
         AServerlessHandler.dbConnection = dbConnection;
     }
 
+    /**
+     * Define the serveless warmup payload
+     * @param payload
+     * @default {'serverless-plugin-warmup'}
+     */
+    public setWarmupPayload(payload: string) {
+        AServerlessHandler.warmupPayload = payload || AServerlessHandler.warmupPayload;
+    }
     /**
      * Provide your controller type
      * @param controllerType
@@ -48,7 +57,13 @@ class AServerlessHandler {
                 if (p1 && p1['callbackWaitsForEmptyEventLoop']) {
                     p1['callbackWaitsForEmptyEventLoop'] = false;
                 }
-
+                if (p0['source'] === AServerlessHandler.warmupPayload) {
+                    Logger.debug('Warmup Executed!');
+                    return callback(null, {
+                        statusCode: HttpStatusCode.NO_CONTENT,
+                        body: null,
+                    });
+                }
                 const handler = this.getHandlerProvider(options);
                 const dbConnection = options?.dbConnection || AServerlessHandler.dbConnection;
                 const response = await handler.applyCall(controllerType, method, p0, p1, dbConnection);

@@ -15,6 +15,8 @@ export class AwsServerlessHandler extends GenericServerlessHandler<AwsHttpEvent,
             body: response.data ? JSON.stringify(response.data) : null,
             headers: {
                 'x-correlation-id': LoggerContext.getCorrelationId(),
+                'Access-Control-Allow-Origin': process.env.CORS_ORIGIN || '*',
+                'Access-Control-Allow-Credentials': process.env.CORS_ALLOW_CREDENTIALS || true,
             },
         };
     }

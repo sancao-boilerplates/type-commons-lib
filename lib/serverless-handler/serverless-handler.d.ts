@@ -3,6 +3,7 @@ import { ServerlessHandlerOptions, ServerlessProvider } from './types';
 declare class AServerlessHandler {
     private static provider;
     private static dbConnection?;
+    private static warmupPayload;
     /**
      * Define the default cloud serverless Provided. Currently accept AWS or GCP.
      * Use ServerlessProvider
@@ -14,6 +15,12 @@ declare class AServerlessHandler {
      * @param dbConnection
      */
     setDbConnection(dbConnection: Function): void;
+    /**
+     * Define the serveless warmup payload
+     * @param payload
+     * @default {'serverless-plugin-warmup'}
+     */
+    setWarmupPayload(payload: string): void;
     /**
      * Provide your controller type
      * @param controllerType
