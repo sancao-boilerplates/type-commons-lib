@@ -1,3 +1,4 @@
+import * as Crypto from 'crypto';
 import * as CryptoJS from 'crypto-js';
 import { Logger, log } from '../logger';
 import { AppConstants } from '../constants';
@@ -36,5 +37,15 @@ export class EncodeUtils {
         const bytes = CryptoJS.AES.decrypt(encodeId.toString(), AppConstants.ENCRYPT_SECRET);
         const response = bytes.toString(CryptoJS.enc.Utf8);
         return response;
+    }
+
+    /**
+     * Generates MD5 Hash for a provided string
+     * @param data {string}
+     * @returns encrypted {string}
+     */
+    @log
+    static generateMd5Hash(data: string): string {
+        return Crypto.createHash('md5').update(data).digest('hex');
     }
 }

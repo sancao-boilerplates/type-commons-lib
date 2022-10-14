@@ -7,4 +7,10 @@ export declare class EncodeUtils {
      */
     static encryptAesId(data: string | object, secret?: string): string;
     static decodeAesId(data: string | object): string;
+    /**
+     * Generates MD5 Hash for a provided string
+     * @param data {string}
+     * @returns encrypted {string}
+     */
+    static generateMd5Hash(data: string): string;
 }
