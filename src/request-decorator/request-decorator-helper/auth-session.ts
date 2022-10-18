@@ -30,7 +30,7 @@ export abstract class AuthSession {
      * Returns loggedUserEmail extracted from bearer token
      * @returns {string | null}
      */
-    static getEmail(): string | null {
+    static getLoggedUserEmail(): string | null {
         return StorageContext.getContextValue('loggedUserEmail', ClsContextNamespace.AUTH);
     }
 
@@ -38,7 +38,7 @@ export abstract class AuthSession {
      * Returns loggedUserId extracted from bearer token
      * @returns {string | null}
      */
-    static getId(): string | null {
+    static getLoggedUserId(): string | null {
         return StorageContext.getContextValue('loggedUserId', ClsContextNamespace.AUTH);
     }
 }

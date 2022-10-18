@@ -18,10 +18,10 @@ export declare abstract class AuthSession {
      * Returns loggedUserEmail extracted from bearer token
      * @returns {string | null}
      */
-    static getEmail(): string | null;
+    static getLoggedUserEmail(): string | null;
     /**
      * Returns loggedUserId extracted from bearer token
      * @returns {string | null}
      */
-    static getId(): string | null;
+    static getLoggedUserId(): string | null;
 }
