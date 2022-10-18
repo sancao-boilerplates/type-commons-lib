@@ -14,4 +14,14 @@ export declare abstract class AuthSession {
      * @returns {string | null}
      */
     static getToken(): string | null;
+    /**
+     * Returns loggedUserEmail extracted from bearer token
+     * @returns {string | null}
+     */
+    static getEmail(): string | null;
+    /**
+     * Returns loggedUserId extracted from bearer token
+     * @returns {string | null}
+     */
+    static getId(): string | null;
 }

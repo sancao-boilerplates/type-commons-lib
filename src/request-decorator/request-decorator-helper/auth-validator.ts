@@ -62,6 +62,8 @@ export class AuthValidator {
         StorageContext.setContextValue('loggedUser', result, ClsContextNamespace.AUTH);
         StorageContext.setContextValue('token', token, ClsContextNamespace.AUTH);
         StorageContext.setContextValue('loggedUserName', result?.username, ClsContextNamespace.AUTH);
+        StorageContext.setContextValue('loggedUserEmail', result?.email, ClsContextNamespace.AUTH);
+        StorageContext.setContextValue('loggedUserId', result?.id, ClsContextNamespace.AUTH);
     }
 
     private static validateRole(userRole: number, requiredRole: number) {

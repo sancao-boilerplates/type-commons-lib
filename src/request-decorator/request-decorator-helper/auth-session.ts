@@ -25,4 +25,20 @@ export abstract class AuthSession {
     static getToken(): string | null {
         return StorageContext.getContextValue('token', ClsContextNamespace.AUTH);
     }
+
+    /**
+     * Returns loggedUserEmail extracted from bearer token
+     * @returns {string | null}
+     */
+    static getEmail(): string | null {
+        return StorageContext.getContextValue('loggedUserEmail', ClsContextNamespace.AUTH);
+    }
+
+    /**
+     * Returns loggedUserId extracted from bearer token
+     * @returns {string | null}
+     */
+    static getId(): string | null {
+        return StorageContext.getContextValue('loggedUserId', ClsContextNamespace.AUTH);
+    }
 }
