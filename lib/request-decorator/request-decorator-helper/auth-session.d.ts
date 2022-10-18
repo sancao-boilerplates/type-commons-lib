@@ -1,4 +1,17 @@
-import { LoggedUser } from '../types/logged-user-type';
 export declare abstract class AuthSession {
-    static loggedUser: LoggedUser | unknown;
+    /**
+     * Get the logged user found in request headers from your bearer token
+     * @returns {T | null}
+     */
+    static getLoggedUser<T>(): T | null;
+    /**
+     * Returns the username extracted from bearer token
+     * @returns {string | null}
+     */
+    static getLoggedUserName(): string | null;
+    /**
+     * Returns access token from income request header
+     * @returns {string | null}
+     */
+    static getToken(): string | null;
 }

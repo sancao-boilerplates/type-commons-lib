@@ -1,5 +1,6 @@
 export interface LoggedUser {
     id?: string;
     email?: string;
-    roles?: Array<string>;
+    username: string;
+    role: number;
 }
