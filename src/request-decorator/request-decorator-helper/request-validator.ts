@@ -30,27 +30,30 @@ export class RequestValidator {
         }
         return parameters;
     }
-
+    private static extractParameterValue(param: string, source: any) {
+        if (!source) return undefined;
+        return source[param] ? source[param] : source[param.toLowerCase()] ? source[param.toLowerCase()] : undefined;
+    }
     private static getParameterOurce(param: InputArgumentParam, arg: InputRequest): unknown {
         switch (param?.type) {
             case ParamType.Body:
                 if (param.paramName) {
-                    return arg?.body ? arg?.body[param.paramName] : undefined;
+                    return RequestValidator.extractParameterValue(param.paramName, arg?.body);
                 }
                 return arg.body;
             case ParamType.Header:
                 if (param.paramName) {
-                    return arg?.headers ? arg?.headers[param.paramName] : undefined;
+                    return RequestValidator.extractParameterValue(param.paramName, arg?.headers);
                 }
                 return arg.headers;
             case ParamType.Query:
                 if (param.paramName) {
-                    return arg?.queryParams ? arg?.queryParams[param.paramName] : undefined;
+                    return RequestValidator.extractParameterValue(param.paramName, arg?.queryParams);
                 }
                 return arg.queryParams;
             case ParamType.Params:
                 if (param.paramName) {
-                    return arg?.pathParams ? arg?.pathParams[param.paramName] : undefined;
+                    return RequestValidator.extractParameterValue(param.paramName, arg?.pathParams);
                 }
                 return arg.pathParams;
             default:

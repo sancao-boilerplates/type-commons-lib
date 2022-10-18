@@ -55,7 +55,7 @@ describe('[RequestValidator]', () => {
             obj.age = 12;
             const arg = [...definition.arguments][0];
             arg.paramName = 'age';
-            arg.validateSchema = null;
+            arg.validateSchema = undefined;
             definition.arguments = new Set();
             definition.arguments.add(arg);
 
