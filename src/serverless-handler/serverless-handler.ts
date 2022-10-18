@@ -1,3 +1,4 @@
+import { StorageContext } from '../cls';
 import { Injector, ObjectType } from '../dependency-injector';
 import { log, Logger } from '../logger';
 import { HttpStatusCode } from '../status-code';
@@ -50,43 +51,45 @@ class AServerlessHandler {
      */
     public handler<T>(controllerType: ObjectType<T>, method: string, options?: ServerlessHandlerOptions): (p0: unknown, p1: unknown, callback?: Function) => unknown {
         return async (p0: unknown, p1: unknown, callback?: Function) => {
-            const start = new Date();
-            try {
-                Logger.debug(p0);
-                Logger.debug(p1);
-                if (p1 && p1['callbackWaitsForEmptyEventLoop']) {
-                    p1['callbackWaitsForEmptyEventLoop'] = false;
-                }
-                if (p0['source'] === AServerlessHandler.warmupPayload) {
-                    Logger.debug('Warmup Executed!');
-                    return callback(null, {
-                        statusCode: HttpStatusCode.NO_CONTENT,
-                        body: null,
-                    });
-                }
-                const handler = this.getHandlerProvider(options);
-                const dbConnection = options?.dbConnection || AServerlessHandler.dbConnection;
-                const response = await handler.applyCall(controllerType, method, p0, p1, dbConnection);
-                Logger.info('Lambda executed');
-                if (callback) {
-                    Logger.info('Calling callback function', { response });
-                    callback(null, response);
-                    return;
-                }
-                return response;
-            } catch (err) {
-                Logger.error('Serverless Handler Error', err);
-                if (callback) {
-                    Logger.info('Calling callback response function');
-                    callback({
+            return StorageContext.run(async () => {
+                const start = new Date();
+                try {
+                    Logger.debug('event', p0);
+                    Logger.debug('context', p1);
+                    if (p1 && p1['callbackWaitsForEmptyEventLoop']) {
+                        p1['callbackWaitsForEmptyEventLoop'] = false;
+                    }
+                    if (p0['source'] === AServerlessHandler.warmupPayload) {
+                        Logger.debug('Warmup Executed!');
+                        return callback(null, {
+                            statusCode: HttpStatusCode.NO_CONTENT,
+                            body: null,
+                        });
+                    }
+                    const handler = this.getHandlerProvider(options);
+                    const dbConnection = options?.dbConnection || AServerlessHandler.dbConnection;
+                    const response = await handler.applyCall(controllerType, method, p0, p1, start, dbConnection);
+                    Logger.info('Lambda executed');
+                    if (callback) {
+                        Logger.info('Calling callback function', { response });
+                        callback(null, response);
+                        return;
+                    }
+                    return response;
+                } catch (err) {
+                    Logger.error('Serverless Handler Error', err);
+                    if (callback) {
+                        Logger.info('Calling callback response function');
+                        callback({
+                            statusCode: err.status ?? HttpStatusCode.INTERNAL_SERVER_ERROR,
+                        });
+                        return;
+                    }
+                    return {
                         statusCode: err.status ?? HttpStatusCode.INTERNAL_SERVER_ERROR,
-                    });
-                    return;
+                    };
                 }
-                return {
-                    statusCode: err.status ?? HttpStatusCode.INTERNAL_SERVER_ERROR,
-                };
-            }
+            });
         };
     }
 

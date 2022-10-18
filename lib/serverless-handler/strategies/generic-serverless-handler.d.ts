@@ -8,6 +8,6 @@ export declare abstract class GenericServerlessHandler<E, C> {
     protected logResponse(rawRequest: InputRequest, response: HttpResponse, start: Date): void;
     private defaultHandlerError;
     private defaultHandleSuccessResponse;
-    applyCall<T>(type: ObjectType<T>, method: string, p0: E, p1: C, dbConnection?: Function): Promise<unknown>;
+    applyCall<T>(type: ObjectType<T>, method: string, p0: E, p1: C, start: Date, dbConnection?: Function): Promise<unknown>;
     private conectDb;
 }

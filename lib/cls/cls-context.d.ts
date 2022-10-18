@@ -1,5 +1,7 @@
 import { ClsContextNamespace } from './cls-context-namespaces';
 declare class LocalStorageContext {
+    private storage;
+    run(next: Function): Promise<void>;
     scope(): void;
     setContext(namespace: ClsContextNamespace, context: object): void;
     getContext(namespace: ClsContextNamespace): object;

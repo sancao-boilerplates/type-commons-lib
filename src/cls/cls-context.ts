@@ -1,36 +1,45 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import * as acl from 'async-local-storage';
+
+import { AsyncLocalStorage } from 'async_hooks';
+import { v4 as uuid } from 'uuid';
 import { ClsContextNamespace } from './cls-context-namespaces';
 
 // eslint-disable-next-line jest/require-hook
-acl.enable();
+
 class LocalStorageContext {
+    private storage = new AsyncLocalStorage();
+
+    public async run(next: Function) {
+        const state = { id: uuid() };
+        return this.storage.run(state, async () => await next());
+    }
+
     public scope(): void {
         try {
-            acl.scope();
         } catch (err) {
-            // eslint-disable-next-line no-console
-            console.warn('Error while creating new log scope');
+            console.warn('Error while creating new log scope', err);
         }
     }
 
     setContext(namespace: ClsContextNamespace, context: object): void {
-        acl.set(namespace, context);
+        if (!this.storage.getStore()) return;
+        (this.storage.getStore() as object)[namespace] = context;
     }
 
     getContext(namespace: ClsContextNamespace): object {
-        return acl.get(namespace) || {};
+        if (!this.storage.getStore()) return {};
+        return (this.storage.getStore() as object)[namespace] || {};
     }
 
     setContextValue(key: string, value: unknown, namespace: ClsContextNamespace): void {
-        const context = acl.get(namespace) || {};
+        const context = this.getContext(namespace) || {};
         context[key] = value;
         this.setContext(namespace, context);
     }
 
     getContextValue(key: string, namespace: ClsContextNamespace): any {
-        const context = acl.get(namespace) || {};
+        const context = this.getContext(namespace);
         return context[key];
     }
 }

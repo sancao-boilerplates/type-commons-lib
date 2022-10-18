@@ -72,8 +72,7 @@ export abstract class GenericServerlessHandler<E, C> {
         return this.handleHttpResponse(httpResponse);
     }
 
-    public async applyCall<T>(type: ObjectType<T>, method: string, p0: E, p1: C, dbConnection?: Function): Promise<unknown> {
-        const start = new Date();
+    public async applyCall<T>(type: ObjectType<T>, method: string, p0: E, p1: C, start: Date, dbConnection?: Function): Promise<unknown> {
         const inputRequest: InputRequest = this.getRawRequest(p0, p1);
         try {
             this.logRequest(inputRequest);
