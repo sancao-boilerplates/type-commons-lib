@@ -3,12 +3,12 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable dot-notation */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-    format, createLogger, transports, Logger,
-} from 'winston';
+import { format, createLogger, transports, Logger } from 'winston';
 import { v4 as uuid } from 'uuid';
 import { Environment } from '../../env/environment';
 import { LoggerContext } from '../log/loger-context';
+import { LoggerConstants } from '../../constants';
+import { LoggerConfigs } from '../log/logger-configs';
 
 export class LoggerBuilder {
     private static loadInfoItems(item: Array<unknown>, info: { [key: string]: any }, text: string): string {
@@ -19,10 +19,20 @@ export class LoggerBuilder {
             text = `${!text ? item : `${text} ${item}`}`;
         } else if (typeof item === 'object') {
             Object.keys(item).forEach((key) => {
-                info[key] = item[key];
+                if (LoggerBuilder.shouldHide(key) && !(process.env.SHOW_SENSETIVE_LOG == 'true')) {
+                    info[key] = LoggerConstants.HidenLogFieldLabel;
+                } else {
+                    info[key] = item[key];
+                }
             });
         }
         return text;
+    }
+
+    private static shouldHide(key: string): boolean {
+        key = key || '';
+        key = key.toLocaleLowerCase();
+        return LoggerConfigs.hiddenFields.includes(key);
     }
 
     private static defaultCustom = (info: { [key: string]: any }, opts: any) => {
@@ -95,7 +105,7 @@ export class LoggerBuilder {
      * Creates aws winston logger
      * @returns aws winston logger {Logger}
      */
-    private static createDefaultWinstonLogger(custom: (info: any, opts?: any) => any = LoggerBuilder.defaultCustom): Logger {
+    private static createDefaultWinstonLogger(custom: (info: any, opts?: any) => any = (info, opts) => LoggerBuilder.defaultCustom(info, opts)): Logger {
         return createLogger({
             level: LoggerBuilder.getLogLevel(),
             format: format.combine(format.timestamp(), LoggerBuilder.customJsonFormat(custom), format.json()),
@@ -107,7 +117,7 @@ export class LoggerBuilder {
      * Customs json format
      * @returns
      */
-    private static customJsonFormat(custom: (info: any, opts?: any) => any = LoggerBuilder.defaultCustom) {
+    private static customJsonFormat(custom: (info: any, opts?: any) => any = (info, opts) => LoggerBuilder.defaultCustom(info, opts)) {
         const customJson = format(custom);
         return customJson();
     }

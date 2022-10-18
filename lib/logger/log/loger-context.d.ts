@@ -25,4 +25,16 @@ export declare class LoggerContext {
     static getLogInfoData(): {
         [key: string]: unknown;
     };
+    /**
+     * Fields name to be added in list of fields should be hidden on logs, by default the fields will be hidden are: ['password', 'cpf', 'psw', 'senha']
+     * @param fields {string[]}
+     * @return {void}
+     */
+    static addLoggerHidenField(fields: Array<string>): void;
+    /**
+     * Replace fields to be hidden on logs, by default the fields will be hidden are: ['password', 'cpf', 'psw', 'senha']
+     * @param fields {string[]}
+     * @return {void}
+     */
+    static setLoggerHidenField(fields: Array<string>): void;
 }

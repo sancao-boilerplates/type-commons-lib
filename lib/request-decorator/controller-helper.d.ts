@@ -13,4 +13,5 @@ export declare class ControllerHelper {
     testQueryAllParams(token: unknown): Promise<unknown>;
     testQueryAllowAitional(token: unknown): Promise<unknown>;
     testAuth(): Promise<string>;
+    testAuthRole(): Promise<string>;
 }

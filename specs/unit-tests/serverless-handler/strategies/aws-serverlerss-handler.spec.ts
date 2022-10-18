@@ -19,19 +19,19 @@ describe('[AwsServerlessHandler] - Suite Test', () => {
         describe('[getRawRequest]', () => {
             it('Should create correctly InpuRequest object', async () => {
                 const getRawRequestMock = jest.spyOn(AwsServerlessHandler.prototype as any, 'getRawRequest');
-                await handler.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext);
+                await handler.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext, new Date());
                 var result = getRawRequestMock.mock.results[0];
                 const req: InputRequest = {
                     method: RequestMockedHelper.GetRequest.httpMethod as HttpMethod,
                     rawRequest: RequestMockedHelper.GetRequest,
-                    requestId: RequestMockedHelper.AwsContext.awsRequestId,
+                    requestId: RequestMockedHelper.AwsContext.awsRequestId || '',
                     body: RequestMockedHelper.GetRequest.body,
                     headers: RequestMockedHelper.GetRequest.headers,
-                    host: RequestMockedHelper.GetRequest.requestContext.identity.sourceIp,
+                    host: RequestMockedHelper.GetRequest.requestContext?.identity.sourceIp || '',
                     path: RequestMockedHelper.GetRequest.path,
                     pathParams: RequestMockedHelper.GetRequest.pathParameters,
                     queryParams: RequestMockedHelper.GetRequest.queryStringParameters,
-                    userAgent: RequestMockedHelper.GetRequest.requestContext.identity.userAgent,
+                    userAgent: RequestMockedHelper.GetRequest.requestContext?.identity.userAgent,
                 };
 
                 expect(result.value).toMatchObject(req);
@@ -44,7 +44,7 @@ describe('[AwsServerlessHandler] - Suite Test', () => {
                 rawRequest.headers = new Map<string, unknown>();
                 const correlation = 'some-new-correlation-id';
                 rawRequest.headers = { 'x-correlation-id': correlation };
-                await handler.applyCall(ControllerHelper, 'getTest', rawRequest, RequestMockedHelper.AwsContext);
+                await handler.applyCall(ControllerHelper, 'getTest', rawRequest, RequestMockedHelper.AwsContext, new Date());
                 var result = getRawRequestMock.mock.results[0];
                 const value = result.value as InputRequest;
 
@@ -55,7 +55,7 @@ describe('[AwsServerlessHandler] - Suite Test', () => {
             it('In case in headers theres no correlation ID shoudl get request id from aws context', async () => {
                 const getRawRequestMock = jest.spyOn(AwsServerlessHandler.prototype as any, 'getRawRequest');
 
-                await handler.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext);
+                await handler.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext, new Date());
                 var result = getRawRequestMock.mock.results[0];
                 const value = result.value as InputRequest;
 
@@ -65,7 +65,7 @@ describe('[AwsServerlessHandler] - Suite Test', () => {
 
         describe('[handleHttpResponse]', () => {
             it('In case success should return AwsResponse Object', async () => {
-                const resp = (await handler.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext)) as AwsHttpResponse;
+                const resp = (await handler.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext, new Date())) as AwsHttpResponse;
                 expect(resp.statusCode).toEqual(expect.any(Number));
                 expect(resp.body).toEqual(expect.any(String));
             });

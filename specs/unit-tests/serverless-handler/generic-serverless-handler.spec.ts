@@ -29,7 +29,7 @@ describe('[GenericServerlessHandler] - Suite Test', () => {
                 methodMock.mockReturnValue('OK');
             });
             it('Should always calling LogRequest, LogResponse and ConnectDB', async () => {
-                await hand.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext);
+                await hand.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext, new Date());
                 expect(logRequestSpy).toHaveBeenCalledTimes(1);
                 expect(logResponseSpy).toHaveBeenCalledTimes(1);
                 expect(conectDbSpy).toHaveBeenCalledTimes(1);
@@ -39,7 +39,7 @@ describe('[GenericServerlessHandler] - Suite Test', () => {
                 logRequestSpy.mockImplementationOnce(() => {
                     throw new Error();
                 });
-                await hand.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext);
+                await hand.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext, new Date());
                 expect(logRequestSpy).toHaveBeenCalledTimes(1);
                 expect(logResponseSpy).toHaveBeenCalledTimes(1);
                 expect(conectDbSpy).toBeCalledTimes(0);
@@ -50,7 +50,7 @@ describe('[GenericServerlessHandler] - Suite Test', () => {
                 logRequestSpy.mockImplementationOnce(() => {
                     throw new Error();
                 });
-                await hand.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext);
+                await hand.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext, new Date());
                 expect(logRequestSpy).toHaveBeenCalledTimes(1);
                 expect(logResponseSpy).toHaveBeenCalledTimes(1);
                 expect(conectDbSpy).toBeCalledTimes(0);
@@ -62,7 +62,7 @@ describe('[GenericServerlessHandler] - Suite Test', () => {
                     throw new Error();
                 });
 
-                const response = (await hand.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext)) as HttpResponse;
+                const response = (await hand.applyCall(ControllerHelper, 'getTest', RequestMockedHelper.GetRequest, RequestMockedHelper.AwsContext, new Date())) as HttpResponse;
                 expect(response.status).toEqual(HttpStatusCode.INTERNAL_SERVER_ERROR);
             });
         });

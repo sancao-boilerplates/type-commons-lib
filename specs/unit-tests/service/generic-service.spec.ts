@@ -7,6 +7,7 @@ import { AxiosRequestConfig } from 'axios';
 import { LoggerConstants, LoggerContext } from '../../../src/logger';
 import { HttpHeaders } from '../../../src/service/http-headers';
 import { RequestOptions } from '../../../src/service/request-options';
+import { StorageContext } from '../../../src/cls';
 const url = '/v2/5ec85ee32f00006500db6fa7';
 const baseUrl = 'http://www.mocky.io';
 let service: GenericServiceTest;
@@ -223,8 +224,10 @@ describe('Generic Service Suite Test', () => {
         it('Should reuse the logger Context CorrelatonId', async () => {
             const spy = jest.spyOn(mockedAxios, 'request');
             const correlationId = 'someCorrelationId';
-            LoggerContext.setCorrelationId(correlationId);
-            await service.get(url);
+            await StorageContext.run(async () => {
+                LoggerContext.setCorrelationId(correlationId);
+                await service.get(url);
+            });
             const config: AxiosRequestConfig = spy.mock.calls[0][0];
             expect(config.headers![LoggerConstants.CorrelationIdHeader]).toBeTruthy();
             expect(config.headers![LoggerConstants.CorrelationIdHeader]).toBe(correlationId);

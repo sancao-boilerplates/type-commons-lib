@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { StorageContext, ClsContextNamespace } from '../../cls';
+import { LoggerConfigs } from './logger-configs';
 
 export class LoggerContext {
     /**
@@ -41,5 +42,25 @@ export class LoggerContext {
     public static getLogInfoData(): { [key: string]: unknown } {
         const data: { [key: string]: unknown } = StorageContext.getContextValue('extraLogInfo', ClsContextNamespace.LOGGER);
         return data || {};
+    }
+
+    /**
+     * Fields name to be added in list of fields should be hidden on logs, by default the fields will be hidden are: ['password', 'cpf', 'psw', 'senha']
+     * @param fields {string[]}
+     * @return {void}
+     */
+    public static addLoggerHidenField(fields: Array<string>): void {
+        fields = fields || [];
+        LoggerConfigs.hiddenFields = LoggerConfigs.hiddenFields.concat(fields);
+    }
+
+    /**
+     * Replace fields to be hidden on logs, by default the fields will be hidden are: ['password', 'cpf', 'psw', 'senha']
+     * @param fields {string[]}
+     * @return {void}
+     */
+    public static setLoggerHidenField(fields: Array<string>): void {
+        fields = fields || [];
+        LoggerConfigs.hiddenFields = fields;
     }
 }

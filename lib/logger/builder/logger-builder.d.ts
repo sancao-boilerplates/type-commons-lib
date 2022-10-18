@@ -1,6 +1,7 @@
 import { Logger } from 'winston';
 export declare class LoggerBuilder {
     private static loadInfoItems;
+    private static shouldHide;
     private static defaultCustom;
     /**
      * You can specify a custom json formatter function that will be called everytime before print a log

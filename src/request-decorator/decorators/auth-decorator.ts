@@ -19,7 +19,7 @@ class AuthDecorator extends BaseDecorator {
         propDesc.value = function (rawRequest: InputRequest) {
             Logger.debug(originalTarget);
 
-            return AuthValidator.validateRequest(rawRequest)
+            return AuthValidator.validateRequest(rawRequest, options)
                 .then(() => BaseDecorator.applyOriginal(this, originalFunction, [rawRequest]))
                 .catch((err) => {
                     throw err;
