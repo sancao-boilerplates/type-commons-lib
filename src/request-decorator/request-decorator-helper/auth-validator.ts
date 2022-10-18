@@ -1,5 +1,6 @@
+import { ClsContextNamespace, StorageContext } from '../../cls';
 import { Logger } from '../../logger';
-import { HttpGenericError } from '../../service';
+import { DefaultHttpService, HttpGenericError } from '../../service';
 import { HttpStatusCode } from '../../status-code';
 import { JwtUtils } from '../../utils';
 import { RegexUtils } from '../../utils/regex-utils';
@@ -8,44 +9,32 @@ import { AuthOptions } from '../types';
 import { AuthConfig } from './auth-configs';
 import { AuthSession } from './auth-session';
 
+const AuthHeader = 'Authorization';
 export class AuthValidator {
-    static validateRequest(request: InputRequest, options?: AuthOptions): void {
+    static async validateRequest(request: InputRequest, options?: AuthOptions): Promise<void> {
         let token;
         try {
-            const header = options?.header || 'Authorization';
-            const headerValue: string = request.headers ? request.headers[header] || request.headers[header.toLowerCase()] : null;
-            const token = headerValue ? RegexUtils.extract(headerValue, RegexUtils.BEARER_REGEX) : null;
+            const header = options?.header || AuthHeader;
+
+            token = request.headers ? request.headers[header] || request.headers[header.toLowerCase()] : null;
+
             if (!token) {
-                Logger.error('Token not found', { header, headerValue, options, request });
-                throw new HttpGenericError(HttpStatusCode.FORBIDDEN, 'Token not found');
+                Logger.warn('Token not found', {
+                    header,
+                    token,
+                    options,
+                    request,
+                });
+                throw new HttpGenericError(HttpStatusCode.UNAUTHORIZED, 'Token not found');
             }
 
             if (AuthConfig.tokenValidator) {
-                const result = AuthConfig.tokenValidator(token);
-                AuthSession.loggedUser = result;
+                const result = await AuthConfig.tokenValidator(token, options);
+                AuthValidator.setAuthSession(result, token);
                 return;
             }
 
-            const result = JwtUtils.validate(token);
-            const roles: Array<string> = result['roles'] || [];
-            if (roles.length == 0) {
-                AuthSession.loggedUser = result;
-                return;
-            }
-            let requiredRoles = options?.roles || [];
-
-            if (typeof requiredRoles === 'string') {
-                requiredRoles = [requiredRoles];
-            }
-
-            for (const requiredRole in requiredRoles) {
-                for (const role in roles) {
-                    if (requiredRole == role) {
-                        AuthSession.loggedUser = result;
-                        return;
-                    }
-                }
-            }
+            await AuthValidator.validateAuth(token, options);
         } catch (err) {
             if (err instanceof HttpGenericError) {
                 Logger.error('Error while validating token', err);
@@ -53,6 +42,35 @@ export class AuthValidator {
             }
             Logger.error('Invalid token found', { token, err });
             throw new HttpGenericError(HttpStatusCode.FORBIDDEN, 'invalid Token');
+        }
+    }
+
+    private static async validateAuth(token: string, options?: AuthOptions): Promise<void> {
+        const headerName = options?.header || AuthHeader;
+        const headers = {};
+        headers[headerName] = token;
+        const url = process.env.AUTH_TOKEN_VALIDATOR_URL;
+        const result = await DefaultHttpService.get(url, { headers });
+        if (!result) {
+            return;
+        }
+        AuthValidator.validateRole(result?.role, options?.role);
+        AuthValidator.setAuthSession(result, token);
+    }
+
+    private static setAuthSession(result: any, token: string) {
+        StorageContext.setContextValue('loggedUser', result, ClsContextNamespace.AUTH);
+        StorageContext.setContextValue('token', token, ClsContextNamespace.AUTH);
+        StorageContext.setContextValue('loggedUserName', result?.username, ClsContextNamespace.AUTH);
+    }
+
+    private static validateRole(userRole: number, requiredRole: number) {
+        if (!requiredRole) {
+            return;
+        }
+
+        if (userRole < requiredRole) {
+            throw new HttpGenericError(HttpStatusCode.FORBIDDEN, 'User has no permission for this resource.');
         }
     }
 }
