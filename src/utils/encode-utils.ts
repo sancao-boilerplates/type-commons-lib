@@ -1,10 +1,10 @@
 import * as Crypto from 'crypto';
 import * as CryptoJS from 'crypto-js';
-import { Logger, log } from '../logger';
+import { Logger, log } from 'node-smart-log';
 import { AppConstants } from '../constants';
 
 export class EncodeUtils {
-    @log
+    @log()
     static encodeBase64(value: string | object): string | null {
         try {
             if (!value) return null;
@@ -24,14 +24,14 @@ export class EncodeUtils {
      * @param data {string | object}
      * @returns encrypted {string}
      */
-    @log
+    @log()
     static encryptAesId(data: string | object, secret?: string): string {
         const encrypted = CryptoJS.AES.encrypt(data.toString(), secret || AppConstants.ENCRYPT_SECRET).toString();
         const response = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(encrypted));
         return response;
     }
 
-    @log
+    @log()
     static decodeAesId(data: string | object): string {
         const encodeId = Buffer.from(data.toString(), 'base64').toString('utf-8');
         const bytes = CryptoJS.AES.decrypt(encodeId.toString(), AppConstants.ENCRYPT_SECRET);
@@ -44,7 +44,7 @@ export class EncodeUtils {
      * @param data {string}
      * @returns encrypted {string}
      */
-    @log
+    @log()
     static generateMd5Hash(data: string): string {
         return Crypto.createHash('md5').update(data).digest('hex');
     }

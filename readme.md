@@ -27,7 +27,7 @@ Esta lib possui dois principais componentes de log, a classe principal Logger e 
 
 Após a importação basta usa-los no seu código:
 
-    @log
+    @log()
     public async myMethod(){
         Logger.debug('Thi is my first debug log' , { structuredLog: 'this is nice!'})
     }

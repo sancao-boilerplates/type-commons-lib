@@ -1,7 +1,7 @@
 import { S3 } from 'aws-sdk';
 import { SHA224 } from 'crypto-js';
 import * as fileType from 'file-type';
-import { log, Logger } from '../logger';
+import { log, Logger } from 'node-smart-log';
 
 export class S3Utils {
     /**
@@ -16,7 +16,7 @@ export class S3Utils {
      * It returns the aws url
      * @returns {string}
      */
-    @log
+    @log()
     static async uploadFile(base64File: string, bucketName: string, key: string, isPublic: boolean = false): Promise<string> {
         try {
             const buffer = Buffer.from(base64File, 'base64');
@@ -40,7 +40,7 @@ export class S3Utils {
         }
     }
 
-    @log
+    @log()
     static async delete(bucketName: string, key: string): Promise<void> {
         try {
             const s3 = S3Utils.getS3();
@@ -56,7 +56,7 @@ export class S3Utils {
             throw error;
         }
     }
-    @log
+    @log()
     static async getFile(bucketName: string, key: string): Promise<S3.Body> {
         try {
             const s3 = S3Utils.getS3();

@@ -1,8 +1,6 @@
 import { GoogleService } from './google-service';
-import {
-    AddressResult, GoogleAddressResponse,
-} from './cep-type';
-import { Logger, log } from '../../logger';
+import { AddressResult, GoogleAddressResponse } from './cep-type';
+import { Logger, log } from 'node-smart-log';
 import { RegexUtils } from '../regex-utils';
 import { CorreiosService } from './correios-serivce';
 import { AppConstants } from '../../constants';
@@ -10,7 +8,7 @@ import { AppConstants } from '../../constants';
 const correiosService = new CorreiosService();
 const googleService = new GoogleService();
 export class CepUtils {
-    @log
+    @log()
     static async getAddressFrom(cep: string): Promise<AddressResult> {
         try {
             cep = CepUtils.validateCep(cep);
@@ -50,7 +48,7 @@ export class CepUtils {
         }
     }
 
-    @log
+    @log()
     static async getGeoLocation(address: string): Promise<GoogleAddressResponse> {
         try {
             const googleResponse = await googleService.getAddressFromGoogle(address);
@@ -61,7 +59,7 @@ export class CepUtils {
         }
     }
 
-    @log
+    @log()
     private static validateCep(cep: string): string {
         if (!cep) {
             throw new Error(`Invalid cep! ${cep}, cep must have 8 digits`);
@@ -75,7 +73,7 @@ export class CepUtils {
         return cep;
     }
 
-    @log
+    @log()
     private static validateGeoLocation(lat: number, lng: number): void {
         if (!lat || lat >= 90 || lat <= -90) {
             throw new Error(`Invalid value for latitude: ${lat}`);
@@ -86,7 +84,7 @@ export class CepUtils {
         }
     }
 
-    @log
+    @log()
     static async getAddressFromGeoLocation(lat: number, lng: number): Promise<GoogleAddressResponse> {
         this.validateGeoLocation(lat, lng);
         return googleService.getAddressFromGeoLocation(lat, lng);

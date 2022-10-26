@@ -1,5 +1,5 @@
-import { log, Logger } from '../logger';
-import { NotFoundError } from '../service/http-exceptions';
+import { log, Logger } from 'node-smart-log';
+import { NotFoundError } from 'node-http-helper';
 import { PaginationDto } from '../utils/pagination-dto';
 import { GenericCrudService } from './generic-crud-service';
 
@@ -10,17 +10,17 @@ export abstract class GenericCrudLogc<T> {
         this.service = service;
     }
 
-    @log
+    @log()
     async create(t: T): Promise<T> {
         return await this.service.create(t);
     }
 
-    @log
+    @log()
     async getAll<F>(pagination: PaginationDto<T, F>): Promise<PaginationDto<T, F>> {
         return this.service.getAll(pagination);
     }
 
-    @log
+    @log()
     async getById(id: string): Promise<T> {
         try {
             const t = this.service.getById(id);
@@ -32,12 +32,12 @@ export abstract class GenericCrudLogc<T> {
         }
     }
 
-    @log
+    @log()
     async update(id: string, toUpdate: T): Promise<T> {
         return this.service.update(id, toUpdate);
     }
 
-    @log
+    @log()
     async deleteById(id: string): Promise<void> {
         return this.service.deleteById(id);
     }

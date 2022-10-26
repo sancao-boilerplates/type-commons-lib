@@ -1,4 +1,4 @@
-import { log, Logger } from '../logger';
+import { log, Logger } from 'node-smart-log';
 import { HttpService } from '../service';
 import { ServiceOptions } from '../service/service-options';
 import { PaginationDto } from '../utils/pagination-dto';
@@ -10,37 +10,37 @@ export abstract class GenericCrudService<T> extends HttpService {
         this.resource = resource;
     }
 
-    @log
+    @log()
     async create(t: T): Promise<T> {
         return await this.post(this.resource, t as unknown as object);
     }
 
-    @log
+    @log()
     async getAll<F>(pagination: PaginationDto<T, F>): Promise<PaginationDto<T, F>> {
         const query = this.getQuery(pagination);
         const url = `${this.resource}${query}`;
         return this.get(url);
     }
 
-    @log
+    @log()
     async getById(id: string): Promise<T> {
         const url = `${this.resource}/${id}`;
         return this.get(url);
     }
 
-    @log
+    @log()
     async update(id: string, toUpdate: T): Promise<T> {
         const url = `${this.resource}/${id}`;
         return this.patch(url, toUpdate as unknown as Object);
     }
 
-    @log
+    @log()
     async deleteById(id: string): Promise<void> {
         const url = `${this.resource}/${id}`;
         return this.delete(url);
     }
 
-    @log
+    @log()
     private getQuery<F>(pagination: PaginationDto<T, F>): string {
         let query = '';
         if (!pagination) return query;

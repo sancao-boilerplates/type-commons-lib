@@ -4,7 +4,7 @@
 import { AxiosRequestConfig } from 'axios';
 import { ServiceOptions } from './service-options';
 import { HttpHeaders } from './http-headers';
-import { log } from '../logger/decorator';
+import { log } from 'node-smart-log';
 import { RequestOptions } from './request-options';
 import { HttpClient } from './http-client';
 
@@ -22,12 +22,12 @@ export abstract class HttpService extends HttpClient {
         };
     }
 
-    @log
+    @log()
     getRequestConfig(): AxiosRequestConfig {
         return this.requestConfig;
     }
 
-    @log
+    @log()
     setRequestConfig(config: AxiosRequestConfig): void {
         this.requestConfig = config;
     }

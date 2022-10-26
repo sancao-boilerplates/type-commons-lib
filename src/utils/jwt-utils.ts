@@ -1,5 +1,5 @@
 import * as Jwt from 'jsonwebtoken';
-import { log, Logger } from '../logger';
+import { log, Logger } from 'node-smart-log';
 import { JwtExpiredError } from './jwt-expired-exception';
 export interface JwtOptions {
     /**
@@ -20,7 +20,7 @@ export abstract class JwtUtils {
      * @options {JwtOptions} Set the secret and expiration for your token
      * @returns {string} Jwt Token
      */
-    @log
+    @log()
     static generate(value: string | Buffer | object, options?: JwtOptions): string {
         try {
             const secret = options?.secreteKey || process.env.JWT_SECRET || 'default_secret';
@@ -32,7 +32,7 @@ export abstract class JwtUtils {
         }
     }
 
-    @log
+    @log()
     static validate<T>(token: string, secret?: string): T {
         try {
             secret = secret || process.env.JWT_SECRET || 'default_secret';

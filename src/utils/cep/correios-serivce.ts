@@ -1,4 +1,4 @@
-import { Logger } from '../../logger';
+import { Logger } from 'node-smart-log';
 import { HttpService } from '../../service';
 import { XmlToJsonUtil } from '../xml-to-json';
 import { AddressOrigin, AddressResult } from './cep-type';

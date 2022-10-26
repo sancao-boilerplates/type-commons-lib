@@ -1,7 +1,6 @@
-import { Body, Delete, Get, Param, Patch, Post, Query } from '../request-decorator';
+import { Body, Delete, Get, Param, Patch, Post, Query } from 'node-http-serverless';
 
-import { HttpStatusCode } from '../status-code';
-import { log, Logger } from '../logger';
+import { log, Logger } from 'node-smart-log';
 import { GenericCrudLogc } from './generic-crud-logic';
 import { PaginationDto } from '../utils';
 import { PaginationSchema } from './schemas';
@@ -13,8 +12,8 @@ export abstract class GenericCrudController<T> {
         this.logic = logic;
     }
 
-    @Post(HttpStatusCode.CREATED)
-    @log
+    @Post()
+    @log()
     async create(@Body() body: T): Promise<void> {
         try {
             await this.logic.create(body);
@@ -24,8 +23,8 @@ export abstract class GenericCrudController<T> {
         }
     }
 
-    @Get(HttpStatusCode.OK)
-    @log
+    @Get()
+    @log()
     async getAll(
         @Query({ validateSchema: PaginationSchema, allowAditionalProperties: true })
         query: PaginationDto<T, string>,
@@ -39,8 +38,8 @@ export abstract class GenericCrudController<T> {
         }
     }
 
-    @Get(HttpStatusCode.OK)
-    @log
+    @Get()
+    @log()
     async getById(@Param('id') id: string): Promise<T> {
         try {
             const result = await this.logic.getById(id);
@@ -52,7 +51,7 @@ export abstract class GenericCrudController<T> {
     }
 
     @Patch()
-    @log
+    @log()
     async update(@Param('id') id: string, @Body() body: T): Promise<T> {
         try {
             const result = await this.logic.update(id, body);

@@ -5,12 +5,12 @@ import axios, { AxiosRequestConfig, Method } from 'axios';
 import * as StatusCode from 'http-status-codes';
 import { v4 as uuid } from 'uuid';
 
-import { HttpGenericError } from './http-exceptions';
-import { LoggerContext, Logger, LogActions } from '../logger/log';
-import { LoggerConstants } from '../constants';
+import { HttpGenericError } from 'node-http-helper';
+import { LoggerContext, Logger } from 'node-smart-log';
+import { LogAction, LoggerConstants } from '../constants';
 import { RequestToCurl } from './request-to-curl';
 import { HttpHeaders } from './http-headers';
-import { log, LogTrace } from '../logger/decorator';
+import { log, LogTrace } from 'node-smart-log';
 import { RequestOptions } from './request-options';
 
 export abstract class HttpClient {
@@ -60,7 +60,7 @@ export abstract class HttpClient {
 
     private getLogTrace(method: string, startLog: Date, payload: any, url: string, config: AxiosRequestConfig, error: any): LogTrace {
         return {
-            action: LogActions.MethodTrace,
+            action: LogAction.MethodTrace,
             class: this.constructor.name,
             function: method.toLowerCase(),
             method: `${this.constructor.name}.${method.toLowerCase()}`,
@@ -87,10 +87,10 @@ export abstract class HttpClient {
         return config;
     }
 
-    @log
+    @log()
     private reqLog(duration: number, responseStatus: number, config: AxiosRequestConfig, responsePayload?: unknown): { [key: string]: unknown } {
         return {
-            action: LogActions.integration,
+            action: LogAction.Integration,
             method: config.method,
             duration,
             responseStatus,
