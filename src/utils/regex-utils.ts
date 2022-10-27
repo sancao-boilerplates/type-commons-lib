@@ -1,4 +1,4 @@
-import { log, Logger } from '../logger';
+import { log, Logger } from 'node-smart-log';
 
 export class RegexUtils {
     public static readonly CLEAR_NO_DIGIT_REGEX = /[^\d]+/g;
@@ -39,7 +39,7 @@ export class RegexUtils {
         }
     }
 
-    @log
+    @log()
     static replace(regex: string | RegExp, value: string, replace: string, isGeneral: boolean = false): string {
         try {
             regex = typeof regex == 'string' ? new RegExp(regex, isGeneral ? 'g' : '') : regex;

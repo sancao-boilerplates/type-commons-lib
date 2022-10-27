@@ -3,7 +3,7 @@ import * as CryptoJS from 'crypto-js';
 import { promisify } from 'util';
 import { CacheService } from './cache-service-interface';
 import { AppConstants } from '../constants';
-import { log, Logger } from '../logger';
+import { log, Logger } from 'node-smart-log';
 import { RedisHelper } from './redis-cache-helper';
 
 export class RedisCache<T> implements CacheService<T> {
@@ -11,12 +11,12 @@ export class RedisCache<T> implements CacheService<T> {
 
     static cacheTime = AppConstants.CACHE.CACHE_TIME || 3600;
 
-    @log
+    @log()
     static generateCacheKey(app: string, key: string): string {
         return CryptoJS.SHA1(`${app}_${key}`).toString();
     }
 
-    @log
+    @log()
     static getClient(): RedisHelper {
         if (RedisCache.redisInstance && RedisCache.redisInstance.client) {
             return RedisCache.redisInstance;
@@ -34,7 +34,7 @@ export class RedisCache<T> implements CacheService<T> {
         return RedisCache.redisInstance;
     }
 
-    @log
+    @log()
     async getCache(app: string, key: string): Promise<T> {
         if (AppConstants.CACHE.CACHE_ENABLE === 'false') {
             return null;
@@ -54,7 +54,7 @@ export class RedisCache<T> implements CacheService<T> {
         }
     }
 
-    @log
+    @log()
     async setCache(app: string, key: string, obj: T): Promise<T> {
         if (AppConstants.CACHE.CACHE_ENABLE === 'false') {
             return obj;
@@ -72,7 +72,7 @@ export class RedisCache<T> implements CacheService<T> {
         }
     }
 
-    @log
+    @log()
     async removeCache(app: string, key: string): Promise<void> {
         if (AppConstants.CACHE.CACHE_ENABLE !== 'false') {
             const cachekey: string = RedisCache.generateCacheKey(app, key);

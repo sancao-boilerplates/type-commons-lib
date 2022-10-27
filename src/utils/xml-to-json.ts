@@ -1,5 +1,5 @@
 import * as xml2json from 'xml2js';
-import { Logger } from '../logger';
+import { Logger } from 'node-smart-log';
 
 export class XmlToJsonUtil {
     static async xmlToJson<T>(xml: string, node?: string): Promise<T> {
