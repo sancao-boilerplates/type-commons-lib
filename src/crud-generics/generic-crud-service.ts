@@ -49,7 +49,7 @@ export abstract class GenericCrudService<T> extends HttpService {
             query = `?skip=${pagination.skip}`;
         }
         if (pagination.offSet) {
-            query = query ? `&offSet=${pagination.offSet}` : `?offSet=${pagination.offSet}`;
+            query = query ? `${query}&offSet=${pagination.offSet}` : `?offSet=${pagination.offSet}`;
         }
         Object.keys(pagination).forEach((k) => {
             if (k == 'total' || k == 'skip' || k == 'offSet' || k == 'data') return;
