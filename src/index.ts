@@ -8,3 +8,4 @@ export * from './utils';
 export * from './cache';
 export * from './dependency-injector';
 export * from './crud-generics';
+export * from 'context-local-storage';
