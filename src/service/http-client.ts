@@ -134,7 +134,7 @@ export abstract class HttpClient {
             response: err.response,
         };
 
-        return new HttpGenericError(statusCode, data.errorMessage, data);
+        return new HttpGenericError(statusCode, data.originData || data.errorMessage, data);
     }
 
     private calclDuration(startDate: Date): number {
