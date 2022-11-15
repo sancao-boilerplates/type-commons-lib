@@ -22,4 +22,31 @@ describe('[RegexUtils]', () => {
             expect(result).toEqual('fdsafsadasd');
         });
     });
+
+    describe('[Email]', () => {
+        it('Should validate email address', () => {
+            let email = 'test';
+            expect(email.match(RegexUtils.EMAIL_VALIDATOR_REGEX)).toBeFalsy();
+            email = 'test@';
+            expect(email.match(RegexUtils.EMAIL_VALIDATOR_REGEX)).toBeFalsy();
+            email = 'test@t';
+            expect(email.match(RegexUtils.EMAIL_VALIDATOR_REGEX)).toBeFalsy();
+            email = 'test@test';
+            expect(email.match(RegexUtils.EMAIL_VALIDATOR_REGEX)).toBeFalsy();
+            email = 'test@test.';
+            expect(email.match(RegexUtils.EMAIL_VALIDATOR_REGEX)).toBeFalsy();
+            email = 'test@test.com';
+            expect(email.match(RegexUtils.EMAIL_VALIDATOR_REGEX)).toBeTruthy();
+            email = '1test@test.com';
+            expect(email.match(RegexUtils.EMAIL_VALIDATOR_REGEX)).toBeTruthy();
+            email = '_test@test.com';
+            expect(email.match(RegexUtils.EMAIL_VALIDATOR_REGEX)).toBeTruthy();
+            email = '2_test@test.com';
+            expect(email.match(RegexUtils.EMAIL_VALIDATOR_REGEX)).toBeTruthy();
+            email = '2_t-est@test.com';
+            expect(email.match(RegexUtils.EMAIL_VALIDATOR_REGEX)).toBeTruthy();
+            email = '2_t-+st@test.com';
+            expect(email.match(RegexUtils.EMAIL_VALIDATOR_REGEX)).toBeTruthy();
+        });
+    });
 });

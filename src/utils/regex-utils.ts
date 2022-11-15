@@ -3,7 +3,7 @@ import { log, Logger } from 'node-smart-log';
 export class RegexUtils {
     public static readonly CLEAR_NO_DIGIT_REGEX = /[^\d]+/g;
 
-    public static readonly EMAIL_VALIDATOR_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
+    public static readonly EMAIL_VALIDATOR_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@\w+([.-]?\w+)*(\.\w{2,})+$/;
 
     public static readonly FORMATTED_PHONE_VALIDATOR_REGEX = /(\(\d{2}\))\s(\d{5})-\d{4}/;
 
