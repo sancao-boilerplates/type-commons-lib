@@ -1,2 +1,2 @@
 import { ServiceOptions } from 'typedi';
-export type ServiceType = ServiceOptions;
+export declare type ServiceType = ServiceOptions;
