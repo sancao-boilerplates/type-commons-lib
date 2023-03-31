@@ -1,4 +1,5 @@
-import { S3 } from 'aws-sdk';
+/// <reference types="node" />
+import { Readable } from 'stream';
 export declare class S3Utils {
     /**
      * Provide the file as base64 string
@@ -14,6 +15,6 @@ export declare class S3Utils {
      */
     static uploadFile(base64File: string, bucketName: string, key: string, isPublic?: boolean): Promise<string>;
     static delete(bucketName: string, key: string): Promise<void>;
-    static getFile(bucketName: string, key: string): Promise<S3.Body>;
+    static getFile(bucketName: string, key: string): Promise<Readable | ReadableStream | Blob>;
     private static getS3;
 }

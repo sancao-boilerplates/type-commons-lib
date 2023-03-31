@@ -1,3 +1,6 @@
+/* eslint-disable func-names */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-types */
 import { Logger } from 'node-smart-log';
 import { AuthValidator } from './auth-validator';
 import { BaseDecorator } from './base-decorator';
@@ -27,4 +30,4 @@ class AuthDecorator extends BaseDecorator {
         return propDesc;
     };
 }
-export const Auth = AuthDecorator.Auth;
+export const { Auth } = AuthDecorator;

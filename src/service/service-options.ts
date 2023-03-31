@@ -13,7 +13,7 @@ export interface ServiceOptions {
     /**
      * The default service timeout in seconds
      */
-    headers?: AxiosRequestHeaders;
+    headers?: AxiosRequestHeaders | unknown;
     /**
      * The Class responsible for Logging
      */

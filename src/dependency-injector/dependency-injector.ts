@@ -1,7 +1,7 @@
 import Container from 'typedi';
 import { GenericDependencyInjector } from './abstract-dependency-injector';
 import { IDependencyInjector } from './interface-dependency-injector';
-import { AbstractType, ObjectType } from './types';
+import { AbstractType } from './types';
 
 class DependencyInjector implements IDependencyInjector {
     private custom: GenericDependencyInjector;
@@ -16,9 +16,10 @@ class DependencyInjector implements IDependencyInjector {
         }
         return Container.get(type);
     }
+
     set(token: unknown, value: unknown): void {
         if (this.custom) {
-            return this.custom.set(token, value);
+            this.custom.set(token, value);
         }
         Container.set(token, value);
     }

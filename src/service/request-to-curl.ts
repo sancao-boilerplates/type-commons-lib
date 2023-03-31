@@ -2,7 +2,7 @@ import { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 
 export class RequestToCurl {
     static convertToCurl(config: AxiosRequestConfig): string {
-        const headers = RequestToCurl.getHeaders(config.headers);
+        const headers = RequestToCurl.getHeaders(config.headers as AxiosRequestHeaders);
         const method = RequestToCurl.getMethod(config.method);
         const body = RequestToCurl.getBody(config.data);
         const url = RequestToCurl.getUrl(config);
@@ -17,7 +17,7 @@ export class RequestToCurl {
             const header = `${property}:${headers[property]}`;
             curlHeaders = `${curlHeaders} -H '${header}'`;
         });
-        //devsuccess@turing.com
+        // devsuccess@turing.com
         return curlHeaders.trim();
     }
 

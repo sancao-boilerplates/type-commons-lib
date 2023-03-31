@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { AxiosRequestConfig } from 'axios';
 import { HttpService } from './generic-service';

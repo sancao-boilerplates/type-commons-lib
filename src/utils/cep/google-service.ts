@@ -1,5 +1,5 @@
-import { HttpService } from '../../service';
 import { Logger } from 'node-smart-log';
+import { HttpService } from '../../service';
 import { GoogleAddressResponse } from './cep-type';
 import { AppConstants } from '../../constants';
 

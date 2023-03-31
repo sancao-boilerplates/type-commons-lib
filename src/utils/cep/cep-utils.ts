@@ -1,6 +1,6 @@
+import { Logger, log } from 'node-smart-log';
 import { GoogleService } from './google-service';
 import { AddressResult, GoogleAddressResponse } from './cep-type';
-import { Logger, log } from 'node-smart-log';
 import { RegexUtils } from '../regex-utils';
 import { CorreiosService } from './correios-serivce';
 import { AppConstants } from '../../constants';

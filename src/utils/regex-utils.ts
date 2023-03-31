@@ -40,9 +40,9 @@ export class RegexUtils {
     }
 
     @log()
-    static replace(regex: string | RegExp, value: string, replace: string, isGeneral: boolean = false): string {
+    static replace(regex: string | RegExp, value: string, replace: string, isGeneral = false): string {
         try {
-            regex = typeof regex == 'string' ? new RegExp(regex, isGeneral ? 'g' : '') : regex;
+            regex = typeof regex === 'string' ? new RegExp(regex, isGeneral ? 'g' : '') : regex;
             if (!value) return null;
             if (replace === null || replace === undefined) return value;
 

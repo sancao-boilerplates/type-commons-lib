@@ -1,7 +1,7 @@
-import { RedisClient } from 'redis';
+import { RedisClientType } from 'redis';
 
 export class RedisHelper {
-    public client: RedisClient;
+    public client: RedisClientType;
 
     public getCacheAsync: <T>(key: string) => Promise<T>;
 

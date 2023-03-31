@@ -1,7 +1,7 @@
 import { ClsContextNamespace, StorageContext } from 'context-local-storage';
 import { Logger } from 'node-smart-log';
-import { DefaultHttpService } from '../service';
 import { ForbidenError, HttpGenericError, UnauthorizedError } from 'node-http-helper';
+import { DefaultHttpService } from '../service';
 import { AuthOptions } from './types';
 import { AuthConfig } from './auth-configs';
 

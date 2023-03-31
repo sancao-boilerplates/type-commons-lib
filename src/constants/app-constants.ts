@@ -15,5 +15,5 @@ export class AppConstants {
         CACHE_ENABLE: process.env.CACHE_ENABLE || 'false',
         DYNAMO_CACHE_TABLE: process.env.DYNAMO_CACHE_TABLE || '',
         S3_CACHE_BUCKET: process.env.S3_CACHE_BUCKET || '',
-    }
+    };
 }

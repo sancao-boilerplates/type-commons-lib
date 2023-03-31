@@ -1,9 +1,9 @@
-import * as redis from 'redis';
+import { createClient } from 'redis';
 import * as CryptoJS from 'crypto-js';
 import { promisify } from 'util';
+import { log, Logger } from 'node-smart-log';
 import { CacheService } from './cache-service-interface';
 import { AppConstants } from '../constants';
-import { log, Logger } from 'node-smart-log';
 import { RedisHelper } from './redis-cache-helper';
 
 export class RedisCache<T> implements CacheService<T> {
@@ -25,10 +25,10 @@ export class RedisCache<T> implements CacheService<T> {
         const credentials = JSON.parse(`${AppConstants.CACHE.REDIS_CONNECTION}`);
 
         RedisCache.redisInstance = new RedisHelper();
-        RedisCache.redisInstance.client = new redis.RedisClient(credentials);
+        RedisCache.redisInstance.client = createClient(credentials);
 
         RedisCache.redisInstance.getCacheAsync = promisify(RedisCache.redisInstance.client.get).bind(this.redisInstance.client);
-        RedisCache.redisInstance.setCacheAsync = promisify(RedisCache.redisInstance.client.setex).bind(this.redisInstance.client);
+        RedisCache.redisInstance.setCacheAsync = promisify(RedisCache.redisInstance.client.setEx).bind(this.redisInstance.client);
         RedisCache.redisInstance.removeCacheAsync = promisify(RedisCache.redisInstance.client.del).bind(this.redisInstance.client);
 
         return RedisCache.redisInstance;

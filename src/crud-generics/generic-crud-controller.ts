@@ -1,4 +1,6 @@
-import { Body, Delete, Get, Param, Patch, Post, Query } from 'node-http-serverless';
+import {
+ Body, Delete, Get, Param, Patch, Post, Query,
+} from 'node-http-serverless';
 
 import { log, Logger } from 'node-smart-log';
 import { GenericCrudLogc } from './generic-crud-logic';

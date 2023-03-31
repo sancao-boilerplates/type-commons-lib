@@ -6,11 +6,10 @@ import * as StatusCode from 'http-status-codes';
 import { v4 as uuid } from 'uuid';
 
 import { HttpGenericError } from 'node-http-helper';
-import { LoggerContext, Logger } from 'node-smart-log';
+import { LoggerContext, Logger, log, LogTrace } from 'node-smart-log';
 import { LogAction, LoggerConstants } from '../constants';
 import { RequestToCurl } from './request-to-curl';
 import { HttpHeaders } from './http-headers';
-import { log, LogTrace } from 'node-smart-log';
 import { RequestOptions } from './request-options';
 
 export abstract class HttpClient {
@@ -82,7 +81,7 @@ export abstract class HttpClient {
             ...requestConfig,
             method,
             url,
-            data: !payload ?? method == 'GET' ? undefined : payload,
+            data: !payload ?? method === 'GET' ? undefined : payload,
         };
         return config;
     }

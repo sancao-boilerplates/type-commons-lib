@@ -1,6 +1,7 @@
 import * as Jwt from 'jsonwebtoken';
 import { log, Logger } from 'node-smart-log';
 import { JwtExpiredError } from './jwt-expired-exception';
+
 export interface JwtOptions {
     /**
      * @secreteKey {string} The JWT Secret key to security your token, it also can be defined on your environment variabls JWT_SECRET

@@ -1,4 +1,5 @@
 import * as Libs from '../../src/index';
+
 describe('Export Modules - Suite Test', () => {
     it('Should be available Log module', () => {
         expect(Libs.log).toBeDefined();
@@ -8,7 +9,6 @@ describe('Export Modules - Suite Test', () => {
         expect(Libs.LoggerContext).toBeDefined();
         expect(Libs.buildLogger).toBeDefined();
     });
-    
 
     it('Should be available HttpStatusCode module', () => {
         expect(Libs.HttpStatusCode).toBeDefined();
@@ -23,13 +23,10 @@ describe('Export Modules - Suite Test', () => {
         expect(Libs.PreConditionError).toBeDefined();
     });
 
-    
-
     it('Should be available Util module', () => {
         expect(Libs.PhoneUtils).toBeDefined();
         expect(Libs.CepUtils).toBeDefined();
         expect(Libs.DateUtils).toBeDefined();
         expect(Libs.EncodeUtils).toBeDefined();
     });
-
 });

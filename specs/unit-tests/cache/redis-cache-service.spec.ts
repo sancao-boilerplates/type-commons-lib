@@ -8,8 +8,8 @@ describe('redis Cache Service - Suite Test', () => {
     const redisCache: CacheService<unknown> = new RedisCache();
 
     describe('GetCache', () => {
-        let promise = null;
-        let redisInstance = null;
+        let promise = jest.fn();
+        let redisInstance;
 
         let redisHelper: RedisHelper;
 
@@ -19,8 +19,7 @@ describe('redis Cache Service - Suite Test', () => {
 
         afterEach(() => {
             jest.clearAllMocks();
-            jest.doMock('redis', () => redis);
-            promise = null;
+            promise = jest.fn();
             redisInstance = null;
         });
 
@@ -51,7 +50,7 @@ describe('redis Cache Service - Suite Test', () => {
                 .mockImplementation(() => '1233')
                 .mockReturnValue('xpto_key');
             jest.spyOn(RedisCache, 'getClient').mockReturnValue(redisHelper);
-            jest.spyOn(redis, 'RedisClient').mockReturnValue(redisHelper.client);
+            jest.spyOn(redis, 'createClient').mockReturnValue(redisHelper.client);
 
             AppConstants.CACHE.CACHE_ENABLE = 'true';
 
@@ -73,7 +72,7 @@ describe('redis Cache Service - Suite Test', () => {
             jest.spyOn(RedisCache, 'getClient').mockImplementationOnce(() => {
                 throw new Error();
             });
-            jest.spyOn(redis, 'RedisClient').mockReturnValue(redisHelper.client);
+            jest.spyOn(redis, 'createClient').mockReturnValue(redisHelper.client);
             const resp = await redisCache.getCache('app', 'key');
 
             expect(resp).toBe(null);
@@ -95,7 +94,7 @@ describe('redis Cache Service - Suite Test', () => {
                 .mockImplementation(() => '1233')
                 .mockReturnValue('xpto_key');
             jest.spyOn(RedisCache, 'getClient').mockReturnValue(redisHelper);
-            jest.spyOn(redis, 'RedisClient').mockReturnValue(redisHelper.client);
+            jest.spyOn(redis, 'createClient').mockReturnValue(redisHelper.client);
 
             AppConstants.CACHE.CACHE_ENABLE = 'true';
 
@@ -107,8 +106,8 @@ describe('redis Cache Service - Suite Test', () => {
     });
 
     describe('SetCache', () => {
-        let promise = null;
-        let redisInstance = null;
+        let promise;
+        let redisInstance;
 
         let redisHelper: RedisHelper;
 
@@ -119,8 +118,8 @@ describe('redis Cache Service - Suite Test', () => {
         afterEach(() => {
             jest.clearAllMocks();
             jest.doMock('redis', () => redis);
-            promise = null;
-            redisInstance = null;
+            promise;
+            redisInstance;
         });
 
         it('Should return null when object do not exists', async () => {
@@ -169,8 +168,8 @@ describe('redis Cache Service - Suite Test', () => {
     });
 
     describe('RemoveCache', () => {
-        let promise = null;
-        let redisInstance = null;
+        let promise;
+        let redisInstance;
 
         let redisHelper: RedisHelper;
 

@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable indent */
 import * as moment from 'moment';
 import { UnitOfTime } from './unit-of-time';
 import { AppConstants } from '../constants';

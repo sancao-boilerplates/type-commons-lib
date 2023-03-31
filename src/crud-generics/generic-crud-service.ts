@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable @typescript-eslint/ban-types */
 import { log, Logger } from 'node-smart-log';
 import { AuthSession } from '../auth-decorator';
 import { HttpService } from '../service';
@@ -6,19 +8,22 @@ import { PaginationDto } from '../utils/pagination-dto';
 
 export abstract class GenericCrudService<T> extends HttpService {
     resource: string;
+
     constructor(resource: string, options?: ServiceOptions) {
         super(options);
         this.resource = resource;
     }
+
     private setAuthHeader() {
         if (AuthSession.getToken()) {
             const config = this.getRequestConfig();
             config.headers = config.headers ?? {};
-            config.headers['Authorization'] = AuthSession.getToken();
+            config.headers.Authorization = AuthSession.getToken();
             this.setRequestConfig(config);
             Logger.info('Token added to request header');
         }
     }
+
     @log()
     async create(t: T): Promise<T> {
         this.setAuthHeader();
@@ -66,7 +71,7 @@ export abstract class GenericCrudService<T> extends HttpService {
             query = query ? `${query}&offSet=${pagination.offSet}` : `?offSet=${pagination.offSet}`;
         }
         Object.keys(pagination).forEach((k) => {
-            if (k == 'total' || k == 'skip' || k == 'offSet' || k == 'data') return;
+            if (k === 'total' || k === 'skip' || k == 'offSet' || k == 'data') return;
             if (!query) {
                 query = `?${k}=${pagination[k]}`;
             } else {
